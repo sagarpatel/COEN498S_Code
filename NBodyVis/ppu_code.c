@@ -233,6 +233,7 @@ int main(int argc, char **argv)
 {
 	
 
+
 // setup, assign particles initla positions and masses
 // this is done in scalar fashion, NOT SIMD
 // insignificant to performance since it's only done once
@@ -497,10 +498,12 @@ int main(int argc, char **argv)
 
 
 			// update values for shared array (graphics)
+			/*
 			particle_Array_Shared[pC].position[0] = particle_Array_PPU[pC].position[0];
 			particle_Array_Shared[pC].position[1] = particle_Array_PPU[pC].position[1];
 			particle_Array_Shared[pC].position[2] = particle_Array_PPU[pC].position[2];
 			particle_Array_Shared[pC].position[3] = particle_Array_PPU[pC].position[3];
+			*/
 
 			/*
 			printf("Particle %d positions:   ", pC );
@@ -518,6 +521,10 @@ int main(int argc, char **argv)
 
 
 	}
+
+	struct timeval end;
+	gettimeofday(&end,NULL);
+	float deltaTime = ((end.tv_sec - start.tv_sec)*1000.0f + (end.tv_usec -start.tv_usec)/1000.0f);
 
 
 	printf("print out values from post spe calculations\n");
@@ -594,31 +601,54 @@ int main(int argc, char **argv)
 	int deltaTime = endTime - startTime;
 */
 
-	struct timeval end;
-	gettimeofday(&end,NULL);
-	float deltaTime = ((end.tv_sec - start.tv_sec)*1000.0f + (end.tv_usec -start.tv_usec)/1000.0f);
+	// need to look into http://www.xmlsoft.org/
 
 
 	printf("Execution time:    %f\n",deltaTime);
 
+
+	FILE *filePointer;
+	filePointer = fopen("fileLog1.txt","w");
+	fprintf(filePointer, "<SimulationData>\n");
+	
+
 	iterCount = 0;
 	for (iterCount = 0; iterCount< ITERATION_COUNT; iterCount++)
 	{
-		printf("Iteration: %d\n", iterCount);
+		//printf("Iteration: %d\n", iterCount);
+		fprintf(filePointer,"<Iteration>\n");
 
 		pC = 0;
 	    for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
 	    {
 		
-			printf("Particle %d positions:   ", pC );
-			printf("x= %f, y=%f, z=%f", fullSimilationData[iterCount].particleArray[pC].position[0], fullSimilationData[iterCount].particleArray[pC].position[1], fullSimilationData[iterCount].particleArray[pC].position[2]);
-			printf("\n");
+			//printf("Particle %d positions:   ", pC );
+			fprintf(filePointer,"<Particle>\n");
+
+			//printf("x= %f, y=%f, z=%f", fullSimilationData[iterCount].particleArray[pC].position[0], fullSimilationData[iterCount].particleArray[pC].position[1], fullSimilationData[iterCount].particleArray[pC].position[2]);
+			//printf("\n");
+			fprintf(filePointer,"<PositionX>%f</PositionX>\n",fullSimilationData[iterCount].particleArray[pC].position[0]);
+			fprintf(filePointer,"<PositionY>%f</PositionY>\n",fullSimilationData[iterCount].particleArray[pC].position[1]);
+			fprintf(filePointer,"<PositionZ>%f</PositionZ>\n",fullSimilationData[iterCount].particleArray[pC].position[2]);
+
 			
+			fprintf(filePointer,"</Particle>\n");			
 			//fullSimilationData[fullDataCounter].particleArray[pC]= particle_Array_PPU[pC];
 			
 		}
 
+		fprintf(filePointer,"</Iteration>\n");
+
+
 	}
+
+
+	fprintf(filePointer, "</SimulationData>\n");
+
+
+	fclose(filePointer);
+
+
 	return 0;
 }
 
