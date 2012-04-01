@@ -41,8 +41,24 @@ typedef struct
 } 
 particle_Data;
 
-// full array
-particle_Data particle_Array[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
+// one iteration, used for calculations
+particle_Data particle_Array_PPU[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
+
+// used for saving and printing in one shot later
+typedef struct 
+{
+	// no need to be alligned, this is no being sent to SPUs
+	particle_Data particleArray[PARTICLES_MAXCOUNT];
+
+}
+iterationData;
+
+// MEGA ARRAY OF ALL DATA, entire simulation
+iterationData fullSimilationData[ITERATION_COUNT];
+
+int fullDataCounter = 0;
+
+
 
 /// subdivisions of arrays for each spe
 particle_Data spe1_Data[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
@@ -54,6 +70,8 @@ particle_Data spe6_Data[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(partic
 
 
 particle_Data tempParticleArray[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
+
+particle_Data_Shared particle_Array_Shared[PARTICLES_MAXCOUNT];
 
 __vector float zeroVector = {0,0,0,0};
 __vector unsigned int oneVector = {1,1,1,1};
@@ -222,6 +240,7 @@ int main(int argc, char **argv)
 	//time_t startTime = time(NULL);
 
 
+
 	//seed random generator
 	srand( time(NULL) );
 
@@ -238,17 +257,17 @@ int main(int argc, char **argv)
 		float yPos = (float)( rand() % grideSize  - grideSize/2);
 		float zPos = (float)( rand() % grideSize  - grideSize/2);
 
-		particle_Array[pC].position[0] = xPos;
-		particle_Array[pC].position[1] = yPos;
-		particle_Array[pC].position[2] = zPos;
+		particle_Array_PPU[pC].position[0] = xPos;
+		particle_Array_PPU[pC].position[1] = yPos;
+		particle_Array_PPU[pC].position[2] = zPos;
 
-		particle_Array[pC].velocity[3] = PARTICLES_DEFAULTMASS;
+		particle_Array_PPU[pC].velocity[3] = PARTICLES_DEFAULTMASS;
 
-		//particle_Array[pC].position = vec_splat(particle_Array[pC].position, 1);
-		//particle_Array[pC].position = vec_splats((float)GRAVITATIONALCONSTANT); --> use splats, seems faster
+		//particle_Array_PPU[pC].position = vec_splat(particle_Array_PPU[pC].position, 1);
+		//particle_Array_PPU[pC].position = vec_splats((float)GRAVITATIONALCONSTANT); --> use splats, seems faster
 		
 		printf("Particle %d:   ", pC );
-		printf("x= %f, y=%f, z=%f", particle_Array[pC].position[0], particle_Array[pC].position[1], particle_Array[pC].position[2]);
+		printf("x= %f, y=%f, z=%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2]);
 		printf("\n");
 		
 	}
@@ -259,12 +278,12 @@ int main(int argc, char **argv)
 	for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
 	{
 
-		spe1_Data[pC] = particle_Array[pC];	
-		spe2_Data[pC] = particle_Array[pC];	
-		spe3_Data[pC] = particle_Array[pC];	
-		spe4_Data[pC] = particle_Array[pC];	
-		spe5_Data[pC] = particle_Array[pC];	
-		spe6_Data[pC] = particle_Array[pC];		
+		spe1_Data[pC] = particle_Array_PPU[pC];	
+		spe2_Data[pC] = particle_Array_PPU[pC];	
+		spe3_Data[pC] = particle_Array_PPU[pC];	
+		spe4_Data[pC] = particle_Array_PPU[pC];	
+		spe5_Data[pC] = particle_Array_PPU[pC];	
+		spe6_Data[pC] = particle_Array_PPU[pC];		
 	}
 
 	for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
@@ -273,7 +292,7 @@ int main(int argc, char **argv)
 		
 		// compare with zero vector to get on which side of each axis the particle is
 		// 0 is negative, 1 is positive side of the axis
-		__vector bool int axisDirection = vec_cmpgt(particle_Array[i].position, zeroVector);
+		__vector bool int axisDirection = vec_cmpgt(particle_Array_PPU[i].position, zeroVector);
 
 
 
@@ -302,7 +321,7 @@ int main(int argc, char **argv)
 		shiftedAxis = vec_or(shiftedAxis, axis_Y);
 		shiftedAxis = vec_or(shiftedAxis, axis_Z);
 		// insert octant value into last slot of position vector of particle
-		particle_Array[i].position[3] = (float)shiftedAxis[0];
+		particle_Array_PPU[i].position[3] = (float)shiftedAxis[0];
 
 		//printf("Oct ID: %d \n", shiftedAxis[0]);
 
@@ -333,12 +352,12 @@ int main(int argc, char **argv)
 	printf("--------------\n");
 	printf("Starting spe1 part\n");
 */
-
+/*
 	// wait for user input, gives time to start graphics
 	printf("Press Enter to continue\n");
 
 	getchar();
-
+*/
 
 	struct timeval start;
 	gettimeofday(&start,NULL);
@@ -421,112 +440,46 @@ int main(int argc, char **argv)
 		retval = pthread_join(spe6_Thread, NULL);
 		
 
-		/*	
-		printf("print out values from post spe1 calculations\n");
-		i = 0;
-		for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
-		{
-
-			printf("Particle %d positions:   ", i );
-			printf("x= %f, y=%f, z=%f", spe1_Data[i].position[0], spe1_Data[i].position[1], spe1_Data[i].position[2]);
-			printf("\n");
 		
-		}
-		printf("print out values from post spe2 calculations\n");
-		i = 0;
-		for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
-		{
-
-			printf("Particle %d positions:   ", i );
-			printf("x= %f, y=%f, z=%f", spe2_Data[i].position[0], spe2_Data[i].position[1], spe2_Data[i].position[2]);
-			printf("\n");
-		
-		}
-		printf("print out values from post spe3 calculations\n");
-		i = 0;
-		for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
-		{
-
-			printf("Particle %d positions:   ", i );
-			printf("x= %f, y=%f, z=%f", spe3_Data[i].position[0], spe3_Data[i].position[1], spe3_Data[i].position[2]);
-			printf("\n");
-		
-		}
-		printf("print out values from post spe4 calculations\n");
-		i = 0;
-		for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
-		{
-
-			printf("Particle %d positions:   ", i );
-			printf("x= %f, y=%f, z=%f", spe4_Data[i].position[0], spe4_Data[i].position[1], spe4_Data[i].position[2]);
-			printf("\n");
-		
-		}
-		printf("print out values from post spe5 calculations\n");
-		i = 0;
-		for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
-		{
-
-			printf("Particle %d positions:   ", i );
-			printf("x= %f, y=%f, z=%f", spe5_Data[i].position[0], spe5_Data[i].position[1], spe5_Data[i].position[2]);
-			printf("\n");
-		
-		}
-		printf("print out values from post spe6 calculations\n");
-		i = 0;
-		for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
-		{
-
-			printf("Particle %d positions:   ", i );
-			printf("x= %f, y=%f, z=%f", spe6_Data[i].position[0], spe6_Data[i].position[1], spe6_Data[i].position[2]);
-			printf("\n");
-		
-		}
-	*/
-		
-
 		speNumber = 1;
 		
 		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
 		{
-			particle_Array[i] = spe1_Data[i];
+			particle_Array_PPU[i] = spe1_Data[i];
 		}
 
 		speNumber = 2;
 		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
 		{
-			particle_Array[i] = spe2_Data[i];
+			particle_Array_PPU[i] = spe2_Data[i];
 		}
 
 		speNumber = 3;
 		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
 		{
-			particle_Array[i] = spe3_Data[i];
+			particle_Array_PPU[i] = spe3_Data[i];
 		}
 
 		speNumber = 4;
 		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
 		{
-			particle_Array[i] = spe4_Data[i];
+			particle_Array_PPU[i] = spe4_Data[i];
 		}
 
 		speNumber = 5;
 		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
 		{
-			particle_Array[i] = spe5_Data[i];
+			particle_Array_PPU[i] = spe5_Data[i];
 		}
 
 		speNumber = 6;
 		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<PARTICLES_MAXCOUNT; ++i)
 		{
-			particle_Array[i] = spe6_Data[i];
+			particle_Array_PPU[i] = spe6_Data[i];
 		}
 
 		// reset spe counter
 		speNumber = 0;
-
-
-
 		
 
 
@@ -535,13 +488,31 @@ int main(int argc, char **argv)
 		for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
 		{
 
-			spe1_Data[pC] = particle_Array[pC];	
-			spe2_Data[pC] = particle_Array[pC];	
-			spe3_Data[pC] = particle_Array[pC];	
-			spe4_Data[pC] = particle_Array[pC];	
-			spe5_Data[pC] = particle_Array[pC];	
-			spe6_Data[pC] = particle_Array[pC];		
+			spe1_Data[pC] = particle_Array_PPU[pC];	
+			spe2_Data[pC] = particle_Array_PPU[pC];	
+			spe3_Data[pC] = particle_Array_PPU[pC];	
+			spe4_Data[pC] = particle_Array_PPU[pC];	
+			spe5_Data[pC] = particle_Array_PPU[pC];	
+			spe6_Data[pC] = particle_Array_PPU[pC];	
+
+
+			// update values for shared array (graphics)
+			particle_Array_Shared[pC].position[0] = particle_Array_PPU[pC].position[0];
+			particle_Array_Shared[pC].position[1] = particle_Array_PPU[pC].position[1];
+			particle_Array_Shared[pC].position[2] = particle_Array_PPU[pC].position[2];
+			particle_Array_Shared[pC].position[3] = particle_Array_PPU[pC].position[3];
+
+			/*
+			printf("Particle %d positions:   ", pC );
+			printf("x= %f, y=%f, z=%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2]);
+			printf("\n");
+			*/
+
+
+			fullSimilationData[iterCount].particleArray[pC]= particle_Array_PPU[pC];
 		}
+
+		
 
 	//	printf("++++++++++++++ END of ITERATION # %d of %d +++++++++++++++\n", iterCount, ITERATION_COUNT );
 
@@ -555,7 +526,7 @@ int main(int argc, char **argv)
 	{
 
 		printf("Particle %d positions:   ", i );
-		printf("x= %f, y=%f, z=%f", particle_Array[i].position[0], particle_Array[i].position[1], particle_Array[i].position[2]);
+		printf("x= %f, y=%f, z=%f", particle_Array_PPU[i].position[0], particle_Array_PPU[i].position[1], particle_Array_PPU[i].position[2]);
 		printf("\n");
 	
 	}
@@ -567,7 +538,7 @@ int main(int argc, char **argv)
 		
 		// compare with zero vector to get on which side of each axis the particle is
 		// 0 is negative, 1 is positive side of the axis
-		__vector bool int axisDirection = vec_cmpgt(particle_Array[i].position, zeroVector);
+		__vector bool int axisDirection = vec_cmpgt(particle_Array_PPU[i].position, zeroVector);
 
 
 
@@ -596,7 +567,7 @@ int main(int argc, char **argv)
 		shiftedAxis = vec_or(shiftedAxis, axis_Y);
 		shiftedAxis = vec_or(shiftedAxis, axis_Z);
 		// insert octant value into last slot of position vector of particle
-		particle_Array[i].position[3] = (float)shiftedAxis[0];
+		particle_Array_PPU[i].position[3] = (float)shiftedAxis[0];
 
 		//printf("Oct ID: %d \n", shiftedAxis[0]);
 
@@ -630,7 +601,24 @@ int main(int argc, char **argv)
 
 	printf("Execution time:    %f\n",deltaTime);
 
+	iterCount = 0;
+	for (iterCount = 0; iterCount< ITERATION_COUNT; iterCount++)
+	{
+		printf("Iteration: %d\n", iterCount);
 
+		pC = 0;
+	    for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
+	    {
+		
+			printf("Particle %d positions:   ", pC );
+			printf("x= %f, y=%f, z=%f", fullSimilationData[iterCount].particleArray[pC].position[0], fullSimilationData[iterCount].particleArray[pC].position[1], fullSimilationData[iterCount].particleArray[pC].position[2]);
+			printf("\n");
+			
+			//fullSimilationData[fullDataCounter].particleArray[pC]= particle_Array_PPU[pC];
+			
+		}
+
+	}
 	return 0;
 }
 

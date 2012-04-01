@@ -15,7 +15,8 @@ typedef struct
 } 
 particle_Data;
 
-volatile particle_Data particle_Array[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
+
+volatile particle_Data particle_Array_SPU[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
 
 
 int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long envp)
@@ -39,11 +40,11 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
   }
 
   	/*
-  	printf("particle_Array value %d \n", particle_Array);
-  	printf("&particle_Array value %d \n", &particle_Array);
+  	printf("particle_Array_SPU value %d \n", particle_Array_SPU);
+  	printf("&particle_Array_SPU value %d \n", &particle_Array_SPU);
 	*/
 
-  	mfc_get(&particle_Array, pdata, sizeof(particle_Array),tag_id, 0, 0);
+  	mfc_get(&particle_Array_SPU, pdata, sizeof(particle_Array_SPU),tag_id, 0, 0);
   	
 
   	//printf("after mfc_get\n");
@@ -54,7 +55,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
   	mfc_read_tag_status_all();
 
 
-  //	printf("%d\n", &particle_Array );
+  //	printf("%d\n", &particle_Array_SPU );
 	
 	//printf("after array address\n");
 
@@ -117,7 +118,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	{
 
 		//cache the particle data struct to the temp declared outside the loops
-		pDi = particle_Array[i];
+		pDi = particle_Array_SPU[i];
 
 		for(j = 0; j<PARTICLES_MAXCOUNT; ++j)
 		{
@@ -127,7 +128,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			// apply velocities for all bodies at the same time, in seperate loop at the end.
 
 			//cache the particle data struct to the temp declared outside the loops
-			pDj = particle_Array[j];
+			pDj = particle_Array_SPU[j];
 
 
 			tempDistance = spu_sub(pDj.position,pDi.position); //actual distance vector between objects i and j
@@ -211,12 +212,12 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 			//increment velocity value of particle with a*dt
 			// need to explicitly call the array, since pDi is only a temp pass by value, doesn't change the particle
-			particle_Array[i].velocity = spu_madd(tempAcceleration, tempDELATTIME, particle_Array[i].velocity);
+			particle_Array_SPU[i].velocity = spu_madd(tempAcceleration, tempDELATTIME, particle_Array_SPU[i].velocity);
 
 			/*
 			//Print velocity
 			printf("Velocity %d:   ", i );
-			printf("x= %f, y=%f, z=%f", particle_Array[i].velocity[0], particle_Array[i].velocity[1], particle_Array[i].velocity[2]);
+			printf("x= %f, y=%f, z=%f", particle_Array_SPU[i].velocity[0], particle_Array_SPU[i].velocity[1], particle_Array_SPU[i].velocity[2]);
 			printf("\n");
 			*/
 
@@ -239,11 +240,11 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	{
 		//incrementing position with v*dt
 		// spu_madd is awesome, it all gets done in one line! emulated the += operator, kinda, but more flexible
-		particle_Array[i].position = spu_madd(particle_Array[i].velocity, tempDELATTIME, particle_Array[i].position);
+		particle_Array_SPU[i].position = spu_madd(particle_Array_SPU[i].velocity, tempDELATTIME, particle_Array_SPU[i].position);
 
 		/*
 		printf("Particle %d positions:   ", i );
-		printf("x= %f, y=%f, z=%f", particle_Array[i].position[0], particle_Array[i].position[1], particle_Array[i].position[2]);
+		printf("x= %f, y=%f, z=%f", particle_Array_SPU[i].position[0], particle_Array_SPU[i].position[1], particle_Array_SPU[i].position[2]);
 		printf("\n");
 		*/
 	
@@ -259,7 +260,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 */
 	//send back data
-	mfc_put (&particle_Array, pdata, sizeof(particle_Array),tag_id, 0, 0);
+	mfc_put (&particle_Array_SPU, pdata, sizeof(particle_Array_SPU),tag_id, 0, 0);
 
     // wait for the DMA put to complete 
     mfc_write_tag_mask (1 << tag_id);
