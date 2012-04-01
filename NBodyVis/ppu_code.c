@@ -616,28 +616,28 @@ int main(int argc, char **argv)
 	for (iterCount = 0; iterCount< ITERATION_COUNT; iterCount++)
 	{
 		//printf("Iteration: %d\n", iterCount);
-		fprintf(filePointer,"<Iteration>\n");
+		fprintf(filePointer,"<Iter>\n");
 
 		pC = 0;
 	    for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
 	    {
 		
 			//printf("Particle %d positions:   ", pC );
-			fprintf(filePointer,"<Particle>\n");
+			fprintf(filePointer,"<Obj>\n");
 
 			//printf("x= %f, y=%f, z=%f", fullSimilationData[iterCount].particleArray[pC].position[0], fullSimilationData[iterCount].particleArray[pC].position[1], fullSimilationData[iterCount].particleArray[pC].position[2]);
 			//printf("\n");
-			fprintf(filePointer,"<PositionX>%f</PositionX>\n",fullSimilationData[iterCount].particleArray[pC].position[0]);
-			fprintf(filePointer,"<PositionY>%f</PositionY>\n",fullSimilationData[iterCount].particleArray[pC].position[1]);
-			fprintf(filePointer,"<PositionZ>%f</PositionZ>\n",fullSimilationData[iterCount].particleArray[pC].position[2]);
+			fprintf(filePointer,"<PX>%f</PX>\n",fullSimilationData[iterCount].particleArray[pC].position[0]);
+			fprintf(filePointer,"<PY>%f</PY>\n",fullSimilationData[iterCount].particleArray[pC].position[1]);
+			fprintf(filePointer,"<PZ>%f</PZ>\n",fullSimilationData[iterCount].particleArray[pC].position[2]);
 
 			
-			fprintf(filePointer,"</Particle>\n");			
+			fprintf(filePointer,"</Obj>\n");			
 			//fullSimilationData[fullDataCounter].particleArray[pC]= particle_Array_PPU[pC];
 			
 		}
 
-		fprintf(filePointer,"</Iteration>\n");
+		fprintf(filePointer,"</Iter>\n");
 
 
 	}
