@@ -219,10 +219,7 @@ int main(int argc, char **argv)
 // this is done in scalar fashion, NOT SIMD
 // insignificant to performance since it's only done once
 
-	time_t startTime = time(NULL);
-
-	struct timeval start;
-	gettimeofday(&start,NULL);
+	//time_t startTime = time(NULL);
 
 
 	//seed random generator
@@ -336,6 +333,16 @@ int main(int argc, char **argv)
 	printf("--------------\n");
 	printf("Starting spe1 part\n");
 */
+
+	// wait for user input, gives time to start graphics
+	printf("Press Enter to continue\n");
+
+	getchar();
+
+
+	struct timeval start;
+	gettimeofday(&start,NULL);
+
 
 	int iterCount = 0;
 	for (iterCount = 0; iterCount< ITERATION_COUNT; iterCount++)

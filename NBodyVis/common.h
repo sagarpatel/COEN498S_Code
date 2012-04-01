@@ -9,7 +9,7 @@
 #define DELTA_TIME 60.0
 #define GRID_SIZE 10 // grid is a +- GRID_SIZE/2 cube
 #define EPS 1.0 // EPS^2 constant to avoid singularities
-#define ITERATION_COUNT 1000
+#define ITERATION_COUNT 100
 
 #define SPU_COUNT 6 // numbers of spus that will be used
 
