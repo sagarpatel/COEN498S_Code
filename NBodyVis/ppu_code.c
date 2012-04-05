@@ -80,6 +80,8 @@ __vector unsigned short resetOctantCount = {0,0,0,0,0,0,0};
 __vector unsigned short increment = {1,1,1,1,1,1,1,1};
 __vector unsigned short octantCount;
 
+__vector float initialVelocityVector = {0, 0.002f, 0, PARTICLES_DEFAULTMASS};
+
 int speNumber = 0;
 //particle_Data* speData;
 int i;
@@ -263,6 +265,17 @@ int main(int argc, char **argv)
 		particle_Array_PPU[pC].position[2] = zPos;
 
 		particle_Array_PPU[pC].velocity[3] = PARTICLES_DEFAULTMASS;
+
+		if(pC == 0)
+		{
+			// center, high mass
+			particle_Array_PPU[pC].position = zeroVector;
+			particle_Array_PPU[pC].velocity[3] = PARTICLES_DEFAULTMASS * 10000.0f;
+		}
+		else
+		{
+			particle_Array_PPU[pC].velocity = initialVelocityVector;
+		}
 
 		//particle_Array_PPU[pC].position = vec_splat(particle_Array_PPU[pC].position, 1);
 		//particle_Array_PPU[pC].position = vec_splats((float)GRAVITATIONALCONSTANT); --> use splats, seems faster
@@ -609,41 +622,50 @@ int main(int argc, char **argv)
 
 	FILE *filePointer;
 	filePointer = fopen("fileLog1.txt","w");
-	fprintf(filePointer, "<SimulationData>\n");
+	//fprintf(filePointer, "<SimulationData>\n");
 	
 
 	iterCount = 0;
 	for (iterCount = 0; iterCount< ITERATION_COUNT; iterCount++)
 	{
 		//printf("Iteration: %d\n", iterCount);
-		fprintf(filePointer,"<Iter>\n");
+		//fprintf(filePointer,"<Iter>\n");
+		fprintf(filePointer,"\n");
 
 		pC = 0;
 	    for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
 	    {
 		
 			//printf("Particle %d positions:   ", pC );
-			fprintf(filePointer,"<Obj>\n");
+		//	fprintf(filePointer,"<Obj>\n");
+	    	
 
 			//printf("x= %f, y=%f, z=%f", fullSimilationData[iterCount].particleArray[pC].position[0], fullSimilationData[iterCount].particleArray[pC].position[1], fullSimilationData[iterCount].particleArray[pC].position[2]);
 			//printf("\n");
+			
+	    	/*
 			fprintf(filePointer,"<PX>%f</PX>\n",fullSimilationData[iterCount].particleArray[pC].position[0]);
 			fprintf(filePointer,"<PY>%f</PY>\n",fullSimilationData[iterCount].particleArray[pC].position[1]);
 			fprintf(filePointer,"<PZ>%f</PZ>\n",fullSimilationData[iterCount].particleArray[pC].position[2]);
+			*/
 
-			
-			fprintf(filePointer,"</Obj>\n");			
+			fprintf(filePointer,"%f,",fullSimilationData[iterCount].particleArray[pC].position[0]);
+			fprintf(filePointer,"%f,",fullSimilationData[iterCount].particleArray[pC].position[1]);
+			fprintf(filePointer,"%f",fullSimilationData[iterCount].particleArray[pC].position[2]);
+
+			fprintf(filePointer,"|");
+			//fprintf(filePointer,"</Obj>\n");			
 			//fullSimilationData[fullDataCounter].particleArray[pC]= particle_Array_PPU[pC];
 			
 		}
 
-		fprintf(filePointer,"</Iter>\n");
+		//fprintf(filePointer,"</Iter>\n");
 
 
 	}
 
 
-	fprintf(filePointer, "</SimulationData>\n");
+	//fprintf(filePointer, "</SimulationData>\n");
 
 
 	fclose(filePointer);

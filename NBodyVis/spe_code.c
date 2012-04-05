@@ -146,7 +146,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 			//use the distance vector  right now for numerator, before we overwrite is later in the code
 			// use mass of subject mass
-			tempMassSplat = spu_splats((float)pDi.velocity[3]); //mass is stored in the last element (3) of velocity vector
+			tempMassSplat = spu_splats((float)pDj.velocity[3]); //mass is stored in the last element (3) of velocity vector
 			tempNumerator = spu_madd(tempMassSplat, tempGConstant, zeroVector);
 			
 
