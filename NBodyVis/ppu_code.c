@@ -81,7 +81,8 @@ __vector unsigned short increment = {1,1,1,1,1,1,1,1};
 __vector unsigned short octantCount;
 
 __vector float initPositionVector = {10,0,0,0};
-__vector float initialVelocityVector = {0, 0.003f, 0, PARTICLES_DEFAULTMASS};
+__vector float initialVelocityVector_X = {0.005f, 0, 0, PARTICLES_DEFAULTMASS};
+__vector float initialVelocityVector_Y = {0, 0.003f, 0, PARTICLES_DEFAULTMASS};
 
 int speNumber = 0;
 //particle_Data* speData;
@@ -276,12 +277,21 @@ int main(int argc, char **argv)
 		if(pC == 1)
 		{
 			particle_Array_PPU[pC].position = initPositionVector;
-			particle_Array_PPU[pC].velocity = initialVelocityVector;
+			particle_Array_PPU[pC].velocity = initialVelocityVector_Y;
 
 		}
 		else
 		{
-			//particle_Array_PPU[pC].velocity = initialVelocityVector;
+			if(particle_Array_PPU[pC].position[0] > particle_Array_PPU[pC].position[1])
+			{
+				//particle_Array_PPU[pC].velocity = initialVelocityVector_Y;
+			}
+			else
+			{
+				//particle_Array_PPU[pC].velocity = initialVelocityVector_X;
+			}
+
+
 		}
 
 		//particle_Array_PPU[pC].position = vec_splat(particle_Array_PPU[pC].position, 1);

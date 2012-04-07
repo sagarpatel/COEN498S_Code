@@ -206,7 +206,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			tempDistance = spu_add(tempDistance, tempDistanceRL1); //tempDistance is now total distance squared
 			
 			// add EPS to avoid singularity
-			//tempDistance =  spu_add(tempDistance, tempEPS); //this is now the denominator value
+			tempDistance =  spu_add(tempDistance, tempEPS); //this is now the denominator value
 
 			//save inverse magnitude for unit vector later
 			tempUnitVector = spu_rsqrte(tempDistance);
