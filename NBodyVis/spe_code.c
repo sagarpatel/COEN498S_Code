@@ -182,10 +182,24 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			//nvm found spu function to rotate floats, using quadwords
 			// rotate by multiple of 32 bits (sizeof float)
 			// need to test
-			tempDistanceRL1 = spu_rlqw(tempDistance,1);
-			tempDistanceRL2 = spu_rlqw(tempDistance,2);
+			//tempDistanceRL1 = spu_rlqw(tempDistance,1);
+			//tempDistanceRL2 = spu_rlqw(tempDistance,2);
+			
+			///\\\\ doing it manually
+			tempDistanceRL1[0] = tempDistance[1];
+			tempDistanceRL1[1] = tempDistance[2];
+			tempDistanceRL1[2] = tempDistance[0];
 
+			tempDistanceRL2[0] = tempDistance[2];
+			tempDistanceRL2[1] = tempDistance[0];
+			tempDistanceRL2[2] = tempDistance[1];
 
+			/*
+			printf("tempDistance: %f %f %f \n", tempDistance[0], tempDistance[1], tempDistance[2] );
+			printf("tempDistanceRL1: %f %f %f \n", tempDistanceRL1[0], tempDistanceRL1[1], tempDistanceRL1[2] );
+			printf("tempDistanceRL2: %f %f %f \n\n", tempDistanceRL2[0], tempDistanceRL2[1], tempDistanceRL2[2] );
+			*/
+			
 			//add both
 			tempDistanceRL1 = spu_add(tempDistanceRL1, tempDistanceRL2);
 			//add to original to get total ---> x+y+z
@@ -221,8 +235,11 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 			//Print  accell
 			/*
-			printf("x= %f, y=%f, z=%f", tempAcceleration[0], tempAcceleration[1], tempAcceleration[2]);
-			printf("\n");
+			if(pDi.velocity[3] != pDj.velocity[3])
+			{
+				printf("Acceleration applied on particle: %d : x= %f, y=%f, z=%f", i, tempAcceleration[0], tempAcceleration[1], tempAcceleration[2]);
+				printf("\n");
+			}
 			*/
 
 			//increment velocity value of particle with a*dt

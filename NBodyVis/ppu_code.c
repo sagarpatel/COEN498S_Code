@@ -81,7 +81,7 @@ __vector unsigned short increment = {1,1,1,1,1,1,1,1};
 __vector unsigned short octantCount;
 
 __vector float initPositionVector = {10,0,0,0};
-__vector float initialVelocityVector = {0, 0.02f, 0, PARTICLES_DEFAULTMASS};
+__vector float initialVelocityVector = {0, 0.003f, 0, PARTICLES_DEFAULTMASS};
 
 int speNumber = 0;
 //particle_Data* speData;
@@ -271,7 +271,7 @@ int main(int argc, char **argv)
 		{
 			// center, high mass
 			particle_Array_PPU[pC].position = zeroVector;
-			particle_Array_PPU[pC].velocity[3] = PARTICLES_DEFAULTMASS * 100000.0f;
+			particle_Array_PPU[pC].velocity[3] = PARTICLES_DEFAULTMASS * 100.0f;
 		}
 		if(pC == 1)
 		{
