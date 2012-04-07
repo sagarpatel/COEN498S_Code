@@ -80,7 +80,8 @@ __vector unsigned short resetOctantCount = {0,0,0,0,0,0,0};
 __vector unsigned short increment = {1,1,1,1,1,1,1,1};
 __vector unsigned short octantCount;
 
-__vector float initialVelocityVector = {0, 0.002f, 0, PARTICLES_DEFAULTMASS};
+__vector float initPositionVector = {10,0,0,0};
+__vector float initialVelocityVector = {0, 0.02f, 0, PARTICLES_DEFAULTMASS};
 
 int speNumber = 0;
 //particle_Data* speData;
@@ -270,18 +271,24 @@ int main(int argc, char **argv)
 		{
 			// center, high mass
 			particle_Array_PPU[pC].position = zeroVector;
-			particle_Array_PPU[pC].velocity[3] = PARTICLES_DEFAULTMASS * 10000.0f;
+			particle_Array_PPU[pC].velocity[3] = PARTICLES_DEFAULTMASS * 100000.0f;
+		}
+		if(pC == 1)
+		{
+			particle_Array_PPU[pC].position = initPositionVector;
+			particle_Array_PPU[pC].velocity = initialVelocityVector;
+
 		}
 		else
 		{
-			particle_Array_PPU[pC].velocity = initialVelocityVector;
+			//particle_Array_PPU[pC].velocity = initialVelocityVector;
 		}
 
 		//particle_Array_PPU[pC].position = vec_splat(particle_Array_PPU[pC].position, 1);
 		//particle_Array_PPU[pC].position = vec_splats((float)GRAVITATIONALCONSTANT); --> use splats, seems faster
 		
 		printf("Particle %d:   ", pC );
-		printf("x= %f, y=%f, z=%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2]);
+		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2], particle_Array_PPU[pC].velocity[3]);
 		printf("\n");
 		
 	}
@@ -518,9 +525,9 @@ int main(int argc, char **argv)
 			particle_Array_Shared[pC].position[3] = particle_Array_PPU[pC].position[3];
 			*/
 
-			/*
+			/*		
 			printf("Particle %d positions:   ", pC );
-			printf("x= %f, y=%f, z=%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2]);
+			printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2], particle_Array_PPU[pC].velocity[3]);
 			printf("\n");
 			*/
 
@@ -546,7 +553,7 @@ int main(int argc, char **argv)
 	{
 
 		printf("Particle %d positions:   ", i );
-		printf("x= %f, y=%f, z=%f", particle_Array_PPU[i].position[0], particle_Array_PPU[i].position[1], particle_Array_PPU[i].position[2]);
+		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[i].position[0], particle_Array_PPU[i].position[1], particle_Array_PPU[i].position[2], particle_Array_PPU[i].velocity[3]);
 		printf("\n");
 	
 	}
