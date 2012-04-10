@@ -80,9 +80,14 @@ __vector unsigned short resetOctantCount = {0,0,0,0,0,0,0};
 __vector unsigned short increment = {1,1,1,1,1,1,1,1};
 __vector unsigned short octantCount;
 
-__vector float initPositionVector = {10,0,0,0};
+__vector float initPositionVector = {5,0,0,0};
 __vector float initialVelocityVector_X = {0.005f, 0, 0, PARTICLES_DEFAULTMASS};
-__vector float initialVelocityVector_Y = {0, 0.003f, 0, PARTICLES_DEFAULTMASS};
+__vector float initialVelocityVector_Y = {0, 0.05f, 0, PARTICLES_DEFAULTMASS};
+__vector float initialVelocityVector_Y_minus = {0, -0.05f, 0, PARTICLES_DEFAULTMASS};
+
+__vector float issPosition = {6761000,0,0,0};  //390000 m is high, need to add radius of earth 6371000 // addition is 6761000
+__vector float issVelocity = {0,7707,0,0};
+
 
 int speNumber = 0;
 //particle_Data* speData;
@@ -272,12 +277,20 @@ int main(int argc, char **argv)
 		{
 			// center, high mass
 			particle_Array_PPU[pC].position = zeroVector;
-			particle_Array_PPU[pC].velocity[3] = PARTICLES_DEFAULTMASS * 100.0f;
+			particle_Array_PPU[pC].velocity = zeroVector; //initialVelocityVector_Y_minus;
+
+			float earthMass = 59736000000000000000.0f; // 5.9736 * pow(10,19);  // scaled for scaled G value  // original = 5.9736 * 10^24
+			printf("Earth mass: %f\n", earthMass );
+			particle_Array_PPU[pC].velocity[3] = earthMass; // PARTICLES_DEFAULTMASS * 500.0f;
 		}
 		if(pC == 1)
 		{
-			particle_Array_PPU[pC].position = initPositionVector;
-			particle_Array_PPU[pC].velocity = initialVelocityVector_Y;
+			particle_Array_PPU[pC].position = issPosition; //initPositionVector;
+			particle_Array_PPU[pC].velocity = issVelocity; //initialVelocityVector_Y;
+
+			float issMass = 4.5; // original = 4.5 * 10^5
+
+			particle_Array_PPU[pC].velocity[3] = issMass; //PARTICLES_DEFAULTMASS * 500.0f;
 
 		}
 		else
