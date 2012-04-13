@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <spu_intrinsics.h>
 #include <spu_mfcio.h>
-#include <simdmath.h>
-#include <recipd2.h>
+//#include <simdmath.h>
+//#include <recipd2.h>
 
 #include "common.h"
 
@@ -100,8 +100,11 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	__vector double distanceVectorXY = {0,0};
 	__vector double distanceVectorZ = {0,0};
 
+	__vector double tempTestXY[2];
+	__vector double tempTestZ[2];
 
-
+	__vector double tempPositionXY[2];
+	__vector double tempPositionZ[2];
 
 	//stupid C99, need to declare indicies before for loops
 	int i = 0;
@@ -161,7 +164,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			tempDistanceXY[1] = pDj.positionXY[1] - pDi.positionXY[1];
 			tempDistanceZ[0] = pDj.positionZ[0] - pDi.positionZ[0];
 
-
+			
 
 			// save value for unit vector calculation later
 			distanceVectorXY = tempDistanceXY;
@@ -217,7 +220,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			tempDistanceXYZ =  spu_add(tempDistanceXYZ, tempEPS); //this is now the denominator value
 
 			//save inverse magnitude for unit vector later
-			
+/*			
 			
 			tempUnitVectorXY = spu_rsqrte(tempDistanceXY);
 			tempUnitVectorZ = spu_rsqrte(tempDistanceZ);
@@ -228,7 +231,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			// invert vector to avoid division later
 			tempDistanceXYZ = spu_re(tempDistanceXYZ); // this is final denominator (already inverted), only need to multiply
 			// tempDistance is now eqivalent to 1/r^2 
-
+*/
 
 			/*
 			//Print denominator
@@ -261,11 +264,28 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 			//increment velocity value of particle with a*dt
 			// need to explicitly call the array, since pDi is only a temp pass by value, doesn't change the particle
-			particle_Array_SPU[i].velocityXY = spu_mul(tempAccelerationXY, tempDELATTIME, particle_Array_SPU[i].velocityXY);
-			particle_Array_SPU[i].velocityZ = spu_mul(tempAccelerationZ, tempDELATTIME, particle_Array_SPU[i].velocityZ);
+			tempAccelerationXY = spu_mul(tempAccelerationXY, tempDELATTIME);
+			
+			tempVelocityXY[0] = particle_Array_SPU[i].velocityXY[0];
+			tempVelocityXY[1] = particle_Array_SPU[i].velocityXY[1];
+
+			particle_Array_SPU[i].velocityXY[0] = spu_add(tempAccelerationXY, tempVelocityXY)[0];
+			particle_Array_SPU[i].velocityXY[1] = spu_add(tempAccelerationXY, tempVelocityXY)[1];
+
+
+
+
+			tempAccelerationZ = spu_mul(tempAccelerationZ, tempDELATTIME);
+
+			tempVelocityZ[0] = particle_Array_SPU[i].velocityZ[0];
+			tempVelocityZ[1] = particle_Array_SPU[i].velocityZ[1];
+
+			particle_Array_SPU[i].velocityZ[0] = spu_add(tempAccelerationZ, tempVelocityZ)[0];
+			particle_Array_SPU[i].velocityZ[1] = spu_add(tempAccelerationZ, tempVelocityZ)[1];
+
 
 			//restore mass in right position, in case
-			particle_Array_SPU[i].position[1] = massSave;
+			particle_Array_SPU[i].positionZ[1] = massSave;
 
 			/*
 			//Print velocity
@@ -294,10 +314,19 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 		//incrementing position with v*dt
 		// spu_madd is awesome, it all gets done in one line! emulated the += operator, kinda, but more flexible
 		
-		particle_Array_SPU[i].positionXY = spu_madd(particle_Array_SPU[i].velocityXY, tempDELATTIME, particle_Array_SPU[i].positionXY);
+		tempVelocityXY[0] = particle_Array_SPU[i].velocityXY[0];
+		tempVelocityXY[1] = particle_Array_SPU[i].velocityXY[1];
+		
 
-		particle_Array_SPU[i].positionZ = spu_madd(particle_Array_SPU[i].velocityZ, tempDELATTIME, particle_Array_SPU[i].positionZ);
+		tempPositionXY = spu_mul(tempVelocityXY, tempDELATTIME);
 
+		tempTestXY[0] = particle_Array_SPU[i].positionXY[0];
+		tempTestXY[1] = particle_Array_SPU[i].positionXY[1];
+
+		particle_Array_SPU[i].positionXY = spu_add(tempPositionXY, tempTestXY);
+
+		tempPositionZ = spu_mul(particle_Array_SPU[i].velocityZ, tempDELATTIME);
+		particle_Array_SPU[i].positionZ = spu_add(tempPositionZ, particle_Array_SPU[i].positionZ);
 		/*
 		printf("Particle %d positions:   ", i );
 		printf("x= %f, y=%f, z=%f", particle_Array_SPU[i].position[0], particle_Array_SPU[i].position[1], particle_Array_SPU[i].position[2]);

@@ -66,7 +66,7 @@ particle_Data spe6_Data[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(partic
 particle_Data tempParticleArray[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
 
 
-__vector double zeroVector = {0,0};
+//__vector double zeroVector = {0,0};
 __vector unsigned int oneVector = {1,1,1,1};
 __vector unsigned int axisBitShiftMask = {0,1,2,0};
 __vector unsigned short resetOctantCount = {0,0,0,0,0,0,0};
