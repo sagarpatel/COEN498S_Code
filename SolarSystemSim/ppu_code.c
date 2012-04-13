@@ -71,7 +71,6 @@ particle_Data spe6_Data[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(partic
 
 particle_Data tempParticleArray[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
 
-particle_Data_Shared particle_Array_Shared[PARTICLES_MAXCOUNT];
 
 __vector float zeroVector = {0,0,0,0};
 __vector unsigned int oneVector = {1,1,1,1};
@@ -248,6 +247,13 @@ int main(int argc, char **argv)
 // insignificant to performance since it's only done once
 
 	//time_t startTime = time(NULL);
+
+	printf("Sun Mass: %f\n",sunMass );
+	printf("Earth Mass: %f\n",earthMass );
+
+	float mult = sunMass * earthMass * GRAVITATIONALCONSTANT;
+	
+	printf("Result: %f\n", mult );
 
 
 
@@ -540,14 +546,7 @@ int main(int argc, char **argv)
 			spe6_Data[pC] = particle_Array_PPU[pC];	
 
 
-			// update values for shared array (graphics)
-			/*
-			particle_Array_Shared[pC].position[0] = particle_Array_PPU[pC].position[0];
-			particle_Array_Shared[pC].position[1] = particle_Array_PPU[pC].position[1];
-			particle_Array_Shared[pC].position[2] = particle_Array_PPU[pC].position[2];
-			particle_Array_Shared[pC].position[3] = particle_Array_PPU[pC].position[3];
-			*/
-
+			
 			/*		
 			printf("Particle %d positions:   ", pC );
 			printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2], particle_Array_PPU[pC].velocity[3]);
