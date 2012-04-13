@@ -1,0 +1,1089 @@
+Solar System Data
+
+source: http://ssd.jpl.nasa.gov/?horizons
+
+
+
+---- Sun ----
+
+ Revised : Sep 12, 1996                  Sun                                 10
+ Physical: Dec 07, 2010
+
+ PHYSICAL PROPERTIES:
+  GM (10^11 km^3/s^2)   = 1.32712440018   Mass (10^30 kg)       =    1.9891
+  Radius (photosphere)  = 6.960(10^5) km  Angular diam at 1 AU  = 1919.3"
+  Mean density          = 1.408 g/cm^3    Surface gravity       =  274.0 m/s^2
+  Moment of inertia     = 0.059           Escape velocity       =  617.7 km/s
+  Adopted sidereal per  = 25.38 d         Pole (RA,DEC in deg.) =  286.13,63.87
+  Obliquity to ecliptic = 7 deg 15'        
+
+  Solar constant (1 AU) = 1367.6 W/m^2    Solar lumin.(erg/s)   =  3.846(10^33)
+  Mass-energy conv rate = 4.3(10^12 gm/s) Effective temp (K)    =  5778
+  Surf. temp (photosphr)= 6600 K (bottom) Surf. temp (photosphr)=  4400 K (top)
+  Photospheric depth    = ~400 km         Chromospheric depth   = ~2500 km
+  Sunspot cycle         = 11.4 yr         Cycle 22 sunspot min. =  1991 A.D.
+
+  Motn. rel to nrby strs= apex : RA=271 deg; DEC=+30 deg
+                          speed: 19.4 km/s = 0.0112 AU/day
+  Motn. rel to 2.73K BB = apex : l=264.7+-0.8; b=48.2+-0.5
+                          speed: 369 +-11 km/s
+
+
+
+
+*******************************************************************************
+Ephemeris / WWW_USER Fri Apr 13 08:32:27 2012 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Sun (10)                        {source: DE405}
+Center body name: Solar System Barycenter (0)     {source: DE405}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2012-Apr-13 00:00:00.0000 CT 
+Stop  time      : A.D. 2012-Apr-14 00:00:00.0000 CT 
+Step-size       : 0 steps
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+Output units    : KM-S                                                         
+Output format   : 02
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC cartesian states
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   X     Y     Z
+   VX    VY    VZ
+*******************************************************************************
+$$SOE
+2456030.500000000 = A.D. 2012-Apr-13 00:00:00.0000 (CT)
+ X =-4.132833220796788E+05 Y =-2.636582940603919E+05 Z =-1.595089016612169E+03
+ VX= 8.553428539671530E-03 VY=-6.431931723425590E-03 VZ=-1.757963579986990E-04
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning  
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      X      x-component of position vector (km)                               
+      Y      y-component of position vector (km)                               
+      Z      z-component of position vector (km)                               
+      VX     x-component of velocity vector (km/sec)                           
+      VY     y-component of velocity vector (km/sec)                           
+      VZ     z-component of velocity vector (km/sec)                           
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+
+
+
+
+
+
+
+
+
+------ Mercury --------
+
+Revised: Sep 12, 1996              Mercury                             199 / 1
+
+ GEOPHYSICAL DATA (updated 2008-Feb-07):
+  Mean radius (km)      =  2440(+-1)     Density (g cm^-3)     =  5.427
+  Mass (10^23 kg )      =     3.302      Flattening, f         =  
+  Volume (x10^10 km^3)  =     6.085      Semi-major axis       = 
+  Sidereal rot. period  =    58.6462 d   Rot. Rate (x10^5 s)   =  0.124001
+  Mean solar day        =   175.9421 d   Polar gravity ms^-2   =
+  Mom. of Inertia       =     0.33       Equ. gravity  ms^-2   =  3.701     
+  Core radius (km)      = ~1600          Potential Love # k2   =
+
+  GM (km^3 s^-2)        = 22032.09       Equatorial Radius, Re =    2440 km
+  GM 1-sigma (km^3 s^-2)=   +-0.91       Mass ratio (sun/plnt) = 6023600
+ 
+  Atmos. pressure (bar) =                Max. angular diam.    = 11.0"   
+  Mean Temperature (K)  =                Visual mag. V(1,0)    = -0.42 
+  Geometric albedo      =   0.106        Obliquity to orbit[1] = 2.11' +/- 0.1'  
+  Sidereal orb. per.    =   0.2408467 y  Orbit vel.  km/s      = 47.8725
+  Sidereal orb. per.    =  87.969257  d  Escape vel. km/s      =  4.435
+  Hill's sphere rad. Rp =  94.4          Planetary Solar Const = 9936.9 (Wm^2)
+
+[1] Margot et al., Science 316, 2007
+
+
+*******************************************************************************
+Ephemeris / WWW_USER Fri Apr 13 08:16:36 2012 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Mercury (199)                   {source: DE405}
+Center body name: Solar System Barycenter (0)     {source: DE405}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2012-Apr-13 00:00:00.0000 CT 
+Stop  time      : A.D. 2012-Apr-14 00:00:00.0000 CT 
+Step-size       : 0 steps
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+Output units    : KM-S                                                         
+Output format   : 02
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC cartesian states
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   X     Y     Z
+   VX    VY    VZ
+*******************************************************************************
+$$SOE
+2456030.500000000 = A.D. 2012-Apr-13 00:00:00.0000 (CT)
+ X =-2.282185781007144E+07 Y =-6.619550246178591E+07 Z =-3.332532103587152E+06
+ VX= 3.634450103754169E+01 VY=-1.326190492349266E+01 VZ=-4.417199442156452E+00
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning  
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      X      x-component of position vector (km)                               
+      Y      y-component of position vector (km)                               
+      Z      z-component of position vector (km)                               
+      VX     x-component of velocity vector (km/sec)                           
+      VY     y-component of velocity vector (km/sec)                           
+      VZ     z-component of velocity vector (km/sec)                           
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+
+
+
+
+
+
+
+
+------ Venus -----
+
+ Revised: Sep 12, 1996              Venus                               299 / 2
+ 
+ GEOPHYSICAL DATA (updated 2006-Feb-27):
+  Mean radius (km)      =   6051.8(4+-1)  Density (g cm^-3)     =  5.204 
+  Mass (10^23 kg )      =     48.685      Flattening, f         =  
+  Volume (x10^10 km^3)  =     92.843      Semi-major axis       =  
+  Sidereal rot. period  =   -243.0185 d   Rot. Rate (x10^5 s)   = -0.029924 
+  Mean solar day        =    116.7490 d   Polar gravity ms^-2   =   
+  Mom. of Inertia       =      0.33       Equ. gravity  ms^-2   =  8.870 
+  Core radius (km)      =  ~3200          Potential Love # k2   = ~0.25 
+
+  Grav spectral fact u  =      1.5        Topo. spectral fact t =  23       
+  Fig. offset (Rcf-Rcm) =      0.19+-01   Offset (lat./long.)   = 11/102 dg/dg 
+  GM (km^3 s^-2)        = 324858.63       Equatorial Radius, Re = 6051.893 km 
+  GM 1-sigma (km^3 s^-2)=    +-0.04       Mass ratio (sun/Mars) = 408523.61
+  
+  Atmos. pressure (bar) =    90           Max. angular diam.    =   60.2" 
+  Mean Temperature (K)  =  735            Visual mag. V(1,0)    =   -4.40 
+  Geometric albedo      =    0.65         Obliquity to orbit    =  177.3 deg 
+  Sidereal orb. per.    =    0.61519726 y Orbit vel.  km/s      =   35.0214 
+  Sidereal orb. per.    =  224.70079922 d Escape vel. km/s      =   10.361 
+  Hill's sphere rad. Rp =  167.1          Planetary Solar Const = 2613.9 (Wm^2)
+
+
+
+*******************************************************************************
+Ephemeris / WWW_USER Fri Apr 13 08:19:39 2012 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Venus (299)                     {source: DE405}
+Center body name: Solar System Barycenter (0)     {source: DE405}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2012-Apr-13 00:00:00.0000 CT 
+Stop  time      : A.D. 2012-Apr-14 00:00:00.0000 CT 
+Step-size       : 0 steps
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+Output units    : KM-S                                                         
+Output format   : 02
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC cartesian states
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   X     Y     Z
+   VX    VY    VZ
+*******************************************************************************
+$$SOE
+2456030.500000000 = A.D. 2012-Apr-13 00:00:00.0000 (CT)
+ X =-1.058073788244400E+08 Y = 2.059008258465065E+07 Z = 6.366774959831549E+06
+ VX=-6.969896438099341E+00 VY=-3.451763671391988E+01 VZ=-7.026830191580631E-02
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning  
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      X      x-component of position vector (km)                               
+      Y      y-component of position vector (km)                               
+      Z      z-component of position vector (km)                               
+      VX     x-component of velocity vector (km/sec)                           
+      VY     y-component of velocity vector (km/sec)                           
+      VZ     z-component of velocity vector (km/sec)                           
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+
+
+
+
+
+
+
+------ Earth -------
+
+Revised: Apr 03, 2003                  Earth                                399
+ 
+PHYSICAL PROPERTIES:
+ Mean radius, km          = 6371.01+-0.02   Mass, 10^24 kg = 5.9736
+ Equ. radius, km          = 6378.136        Mass layers:
+ Polar axis, km           = 6356.752          Atmos          = 5.1   x 10^18 kg
+ Flattening               = 1/298.257         oceans         = 1.4   x 10^21 kg
+ Density, gm cm^-3        = 5.515             crust          = 2.6   x 10^22 kg
+ J2  (GEM T2, 1990)       = 0.0010826265      mantle         = 4.043 x 10^24 kg
+ gp, m s^-2 (polar)       = 9.8321863685      outer core     = 1.835 x 10^24 kg
+ ge, m s^-2 (equatorial)  = 9.7803267715      inner core     = 9.675 x 10^22 kg
+ go, m s^-2               = 9.82022         Fluid core rad   = 3480 km
+ GM, km^3 s^-2            = 398600.440      Inner core rad   = 1215 km
+ Mean rot. rate, rad s^-1 = 7.292115*10^-5  Surface Area:
+ Sidereal period, hr      = 23.93419          land           = 1.48 x 10^8 km
+ Mean solar day, days     = 1.002738          sea            = 3.62 x 10^8 km
+ Moment of inertia        = 0.3308          Love no., k2     = 0.299
+ Mean Temperature, K      = 270             Atm. pressure    = 1.0 bar
+ Solar constant, W/m^2    = 1367.6          Vis. mag. V(1,0) = -3.86
+ Volume, 10^10 km^3       = 108.321         Geometric albedo = 0.367 
+
+DYNAMICAL CHARACTERISTICS:
+ Obliquity to orbit, deg  = 23.45           Sidereal period  = 1.0000174  yrs
+ Orbit velocity, km s^-1  = 29.7859         Sidereal period  = 365.25636  days
+ Mean daily motion, n     = 0.9856474 deg/d Escape velocity  = 11.186 km s^-2
+ Hill's sphere radius     = 234.9           Magnetic moment  = 0.61 gauss Rp^3
+
+
+ *******************************************************************************
+Ephemeris / WWW_USER Fri Apr 13 08:20:50 2012 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Earth (399)                     {source: DE405}
+Center body name: Solar System Barycenter (0)     {source: DE405}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2012-Apr-13 00:00:00.0000 CT 
+Stop  time      : A.D. 2012-Apr-14 00:00:00.0000 CT 
+Step-size       : 0 steps
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+Output units    : KM-S                                                         
+Output format   : 02
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC cartesian states
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   X     Y     Z
+   VX    VY    VZ
+*******************************************************************************
+$$SOE
+2456030.500000000 = A.D. 2012-Apr-13 00:00:00.0000 (CT)
+ X =-1.381861630766980E+08 Y =-5.959065928650285E+07 Z = 1.443041961182789E+02
+ VX= 1.129423769639682E+01 VY=-2.748138826794310E+01 VZ=-2.820796741321531E-04
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning  
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      X      x-component of position vector (km)                               
+      Y      y-component of position vector (km)                               
+      Z      z-component of position vector (km)                               
+      VX     x-component of velocity vector (km/sec)                           
+      VY     y-component of velocity vector (km/sec)                           
+      VZ     z-component of velocity vector (km/sec)                           
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+
+
+
+
+
+
+
+------ Moon -------
+
+
+Revised: Mar 11, 1998             Moon / (Earth)                            301
+ 
+PHYSICAL PROPERTIES:
+ Radius, km            = 1737.53+-0.03   Mass, 10^20 kg        =  734.9
+ Density, gm cm^-3     =    3.3437       Geometric albedo      =    0.12
+ V(1,0)                =   +0.21         GM, km^3/s^2          = 4902.798+-.005
+ Earth/Moon mass ratio = 81.300587       Surface gravity       =    1.62 m s^-2
+ Nearside crust. thick.= 58+-8 km        Farside crust. thick. = ~80 - 90 km
+ Heat flow, Apollo 15  = 3.1+-.6 mW/m^2  Heat flow, Apollo 17  = 2.2+-.5 mW/m^2
+ Mean crustal density  = 2.97+-.07g/cm^3 k2                    = 0.0302+-.0012 
+ Induced magnetic mom. = 4.23x10^22Gcm^3 Magnetometer moment   = 435+-15
+
+DYNAMICAL CHARACTERISTICS:
+ Mean angular diameter = 31'05.2"        Orbit period          = 27.321582 d
+ Obliquity to orbit    = 6.67 deg        Eccentricity          = 0.05490
+ Semi-major axis, a    = 384400 km       Inclination           = 5.145 deg
+ Mean motion, rad/s    = 2.6616995x10^-6 Nodal period          = 6798.38 d
+ Apsidal period        = 3231.50 d       Mom. of inertia C/MR^2= 0.3935+-.0011
+ beta (C-A/B), x10^-4  = 6.31(72+-15)    gamma (B-A/C), x10^-4 = 2.278(8+-2)
+
+
+
+ *******************************************************************************
+Ephemeris / WWW_USER Fri Apr 13 08:22:28 2012 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Moon (301)                      {source: DE405}
+Center body name: Solar System Barycenter (0)     {source: DE405}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2012-Apr-13 00:00:00.0000 CT 
+Stop  time      : A.D. 2012-Apr-14 00:00:00.0000 CT 
+Step-size       : 0 steps
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+Output units    : KM-S                                                         
+Output format   : 02
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC cartesian states
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   X     Y     Z
+   VX    VY    VZ
+*******************************************************************************
+$$SOE
+2456030.500000000 = A.D. 2012-Apr-13 00:00:00.0000 (CT)
+ X =-1.380719489595365E+08 Y =-5.994982493916170E+07 Z = 2.294218530637419E+04
+ VX= 1.229645106574667E+01 VY=-2.722418488955556E+01 VZ= 7.293759886067155E-02
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning  
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      X      x-component of position vector (km)                               
+      Y      y-component of position vector (km)                               
+      Z      z-component of position vector (km)                               
+      VX     x-component of velocity vector (km/sec)                           
+      VY     y-component of velocity vector (km/sec)                           
+      VZ     z-component of velocity vector (km/sec)                           
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+
+
+
+
+
+
+
+---- Mars ----
+
+
+ Revised: Jan 15, 2010                 Mars                             499 / 4
+ 
+ GEOPHYSICAL DATA (updated 2009-May-26):
+  Mean radius (km)      = 3389.9(2+-4)    Density (g cm^-3)     =  3.933(5+-4)
+  Mass (10^23 kg )      =    6.4185       Flattening, f         =  1/154.409
+  Volume (x10^10 km^3)  =   16.318        Semi-major axis       =  3397+-4
+  Sidereal rot. period  =   24.622962 hr  Rot. Rate (x10^5 s)   =  7.088218
+  Mean solar day        =    1.0274907 d  Polar gravity ms^-2   =  3.758
+  Mom. of Inertia       =    0.366        Equ. gravity  ms^-2   =  3.71
+  Core radius (km)      =  ~1700          Potential Love # k2   =  0.153 +-.017
+ 
+  Grav spectral fact u  =   14 (x10^5)    Topo. spectral fact t = 96 (x10^5)
+  Fig. offset (Rcf-Rcm) = 2.50+-0.07 km   Offset (lat./long.)   = 62d / 88d
+  GM (km^3 s^-2)        = 42828.3         Equatorial Radius, Re = 3394.0 km 
+  GM 1-sigma (km^3 s^-2)= +- 0.1          Mass ratio (Sun/Mars) = 3098708+-9
+  
+  Atmos. pressure (bar) =    0.0056       Max. angular diam.    =  17.9"
+  Mean Temperature (K)  =  210            Visual mag. V(1,0)    =  -1.52
+  Geometric albedo      =    0.150        Obliquity to orbit    =  25.19 deg
+  Mean sidereal orb per =    1.88081578 y Orbit vel.  km/s      =  24.1309
+  Mean sidereal orb per =  686.98 d       Escape vel. km/s      =   5.027
+  Hill's sphere rad. Rp =  319.8          Mag. mom (gauss Rp^3) = < 1x10^-4 
+
+
+  *******************************************************************************
+Ephemeris / WWW_USER Fri Apr 13 08:23:46 2012 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Mars (499)                      {source: MAR085}
+Center body name: Solar System Barycenter (0)     {source: DE405}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2012-Apr-13 00:00:00.0000 CT 
+Stop  time      : A.D. 2012-Apr-14 00:00:00.0000 CT 
+Step-size       : 0 steps
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+Output units    : KM-S                                                         
+Output format   : 02
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC cartesian states
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   X     Y     Z
+   VX    VY    VZ
+*******************************************************************************
+$$SOE
+2456030.500000000 = A.D. 2012-Apr-13 00:00:00.0000 (CT)
+ X =-2.471163432484173E+08 Y =-5.314366759945281E+06 Z = 5.950186101208982E+06
+ VX= 1.410945881117451E+00 VY=-2.216302126828855E+01 VZ=-4.988501898727863E-01
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning  
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      X      x-component of position vector (km)                               
+      Y      y-component of position vector (km)                               
+      Z      z-component of position vector (km)                               
+      VX     x-component of velocity vector (km/sec)                           
+      VY     y-component of velocity vector (km/sec)                           
+      VZ     z-component of velocity vector (km/sec)                           
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+
+
+
+
+
+
+--------  Jupiter -------
+
+
+ Revised: Dec 17, 2009              Jupiter                                 599
+ 
+ PHYSICAL DATA (updated 2009-Jan-28):
+  Mass (10^24 kg)       =  1898.13+-.19   Density (g/cm^3)       =  1.326
+  Equat. radius (1 bar) = 71492+-4 km     Polar radius (km)      = 66854+-10
+  Volumetric mean radius= 69911+-6 km     Flattening             =  0.06487
+
+  Rotation period       = 9h 55m 29.685s  Rot. rate(10^-4 rad/s) =  1.75865
+  m = w^2a^3/GM         =  0.089195       Hydrostatic flat., fh  =  0.06509
+  Inferred rot. period  =  9.894+-0.02 hr ks = 3*J2/m            =  0.494
+  Mom. of inert. I/MRo^2=  0.254          I/MRo^2 (upper bound)  =  0.267 
+  Rocky core mass (Mc/M)=  0.0261         Y factor (He/H ratio)  =  0.18+-0.04
+
+  GM (km^3/s^2)         = 126,686,511     GM 1-sigma (km^3/s^2)  = +-100
+  Equ. grav, ge (m/s^2) = 24.79           Pol. grav, gp (m/s^2)  = 28.34
+
+  Geometric albedo      =  0.52           Visual magnitude V(1,0)= -9.40
+  Vis. mag. (opposition)= -2.70           Obliquity to orbit     =  3.12 deg
+  Sidereal orbit period = 11.862615 yr    Sidereal orbit period  = 4332.820 d
+  Mean daily motion     = 0.0831294 deg/d Mean orbit velocity    = 13.0697 km/s
+
+  Atmos. temp. (1 bar)  = 165+-5 K        Heat flow/mass (x10^7) = 15 erg/gm*s
+  Planetary Solar Const =  50.5 W/m^2     Dipole tilt/offset     = 9.6deg/0.1Rp 
+  Escape velocity (km/s)=  59.5           Mag.dip.mom(gauss-Rp^3)= 4.2 
+  Aroche(ice)/Rp        =  2.76           Hill's sphere rad. Rp  = 740
+
+
+
+  *******************************************************************************
+Ephemeris / WWW_USER Fri Apr 13 08:25:21 2012 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Jupiter (599)                   {source: JUP230}
+Center body name: Solar System Barycenter (0)     {source: DE405}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2012-Apr-13 00:00:00.0000 CT 
+Stop  time      : A.D. 2012-Apr-14 00:00:00.0000 CT 
+Step-size       : 0 steps
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+Output units    : KM-S                                                         
+Output format   : 02
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC cartesian states
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   X     Y     Z
+   VX    VY    VZ
+*******************************************************************************
+$$SOE
+2456030.500000000 = A.D. 2012-Apr-13 00:00:00.0000 (CT)
+ X = 4.769836271175172E+08 Y = 5.739283394031227E+08 Z =-1.306923671557253E+07
+ VX=-1.020591075798942E+01 VY= 8.977957804437366E+00 VZ= 1.911279056785002E-01
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning  
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      X      x-component of position vector (km)                               
+      Y      y-component of position vector (km)                               
+      Z      z-component of position vector (km)                               
+      VX     x-component of velocity vector (km/sec)                           
+      VY     y-component of velocity vector (km/sec)                           
+      VZ     z-component of velocity vector (km/sec)                           
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+
+
+
+
+
+------ Saturn ------
+
+
+ Revised: Jan 13, 2012                Saturn                                699
+ 
+ PHYSICAL DATA (updated 2009-May-26):
+  Mass (10^26 kg)       = 5.68319         Density (g/cm^3)       =  0.687+-.001
+  Equat. radius (1 bar) = 60268+-4 km     Polar radius (km)      = 54364+-10
+  Volumetric mean radius= 58232+-6 km     Flattening             =  0.09796
+
+  Rotation period       = 10h 39m 22.4s   Rot. rate(10^-4 rad/s) =  1.63785 
+  m = w^2a^3/GM         =  0.15481        Hydrostatic flat., fh  =  0.09829
+  Inferred rot. period  = 10.61+-0.02 hr  ks = 3*J2/m            =  0.317
+  Mom. of inert. I/MRo^2=  0.210          I/MRo^2 (upper bound)  =  0.231 
+  Rocky core mass (Mc/M)=  0.1027         Y factor (He/H ratio)  =  
+
+  GM (km^3/s^2)         = 37931207.8      GM 1-sigma (km^3/s^2)  = +- 98
+  Equ. grav, ge (m/s^2) = 10.44           Pol. grav, gp (m/s^2)  = 12.14+-0.01
+
+  Geometric albedo      =  0.47           Visual magnitude V(1,0)= -8.88
+  Vis. mag. (opposition)= +0.67           Obliquity to orbit     = 26.73 deg
+  Sidereal orbit period = 29.447498 yr    Sidereal orbit period  = 10755.698 d
+  Mean daily motion     = 0.0334979 deg/d Mean orbit velocity    =  9.6624 km/s
+
+  Atmos. temp. (1 bar)  = 134+-4 K        Heat flow/mass (x10^7) = 15 erg/gm*s
+  Planetary Solar Const =  15.04 W/m^2    Dipole tilt/offset     = 0.0deg/0.0Rp 
+  Escape velocity (km/s)=  35.5           Mag.dip.mom(gauss-Rp^3)= 0.21
+  Aroche(ice)/Rp        =  2.71           Hill's sphere rad. Rp  = 1100
+
+
+  *******************************************************************************
+Ephemeris / WWW_USER Fri Apr 13 08:26:39 2012 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Saturn (699)                    {source: SAT351}
+Center body name: Solar System Barycenter (0)     {source: DE405}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2012-Apr-13 00:00:00.0000 CT 
+Stop  time      : A.D. 2012-Apr-14 00:00:00.0000 CT 
+Step-size       : 0 steps
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+Output units    : KM-S                                                         
+Output format   : 02
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC cartesian states
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   X     Y     Z
+   VX    VY    VZ
+*******************************************************************************
+$$SOE
+2456030.500000000 = A.D. 2012-Apr-13 00:00:00.0000 (CT)
+ X =-1.307266502617793E+09 Y =-6.351709865327513E+08 Z = 6.306891812131889E+07
+ VX= 3.698183926348952E+00 VY=-8.709460082617692E+00 VZ= 4.099305665600630E-03
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning  
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      X      x-component of position vector (km)                               
+      Y      y-component of position vector (km)                               
+      Z      z-component of position vector (km)                               
+      VX     x-component of velocity vector (km/sec)                           
+      VY     y-component of velocity vector (km/sec)                           
+      VZ     z-component of velocity vector (km/sec)                           
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+
+
+
+
+
+
+------ Uranus -----
+
+Revised: Oct 22, 2010                Uranus                                799
+ 
+ PHYSICAL DATA (updated 2009-May-26):
+  Mass (10^24 kg)       =    86.8103      Density (g/cm^3)       =  1.318
+  Equat. radius (1 bar) = 25559+-4 km     Polar radius (km)      = 24973+-20
+  Volumetric mean radius= 25362+-12 km    Flattening             =  0.02293
+
+  Rotation period       = 17.24+-0.01 hr  Rot. rate(10^-4 rad/s) =  1.012   
+  m = w^2a^3/GM         =  0.02954        Hydrostatic flat., fh  =  0.01987
+  Inferred rot. period  = 17.14+-0.9 hr   ks = 3*J2/m            =  0.357
+  Mom. of inert. I/MRo^2=  0.225          I/MRo^2 (upper bound)  =  0.232 
+  Rocky core mass (Mc/M)=  0.0012         Y factor (He/H ratio)  =  0.262+-.048
+
+  GM (km^3/s^2)         = 5,793,966       GM 1-sigma( km^3/s^2)  = +-23
+  Equ. grav, ge (m/s^2) =  8.87           Pol. grav, gp (m/s^2)  =  9.19+-0.02
+
+  Geometric albedo      =  0.51           Visual magnitude V(1,0)= -7.19
+  Vis. mag. (opposition)= +5.52           Obliquity to orbit     = 97.86 deg
+  Sidereal orbit period = 84.016846 yr    Sidereal orbit period  = 30687.153 d
+  Mean daily motion     = 0.01176904 dg/d Mean orbit velocity    =  6.8352 km/s
+
+  Atmos. temp. (1 bar)  =  76+-2 K        Heat flow/mass (x10^7) = 
+  Planetary Solar Const =   3.71 W/m^2    Dipole tilt/offset     = 58.6dg/0.3Rp 
+  Escape velocity (km/s)=  21.3           Mag.dip.mom(gauss-Rp^3)= 0.23
+  Aroche(ice)/Rp        =  2.20           Hill's sphere rad., Rp = 2700
+
+
+*******************************************************************************
+Ephemeris / WWW_USER Fri Apr 13 08:34:44 2012 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Uranus (799)                    {source: URA095}
+Center body name: Solar System Barycenter (0)     {source: DE405}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2012-Apr-13 00:00:00.0000 CT 
+Stop  time      : A.D. 2012-Apr-14 00:00:00.0000 CT 
+Step-size       : 0 steps
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+Output units    : KM-S                                                         
+Output format   : 02
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC cartesian states
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   X     Y     Z
+   VX    VY    VZ
+*******************************************************************************
+$$SOE
+2456030.500000000 = A.D. 2012-Apr-13 00:00:00.0000 (CT)
+ X = 2.992544651964383E+09 Y = 2.379230302329555E+08 Z =-3.788614939610398E+07
+ VX=-5.895046672427994E-01 VY= 6.471086347242878E+00 VZ= 3.174366532140611E-02
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning  
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      X      x-component of position vector (km)                               
+      Y      y-component of position vector (km)                               
+      Z      z-component of position vector (km)                               
+      VX     x-component of velocity vector (km/sec)                           
+      VY     y-component of velocity vector (km/sec)                           
+      VZ     z-component of velocity vector (km/sec)                           
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+
+
+
+
+
+
+
+------- Npetune ------
+
+
+
+ Revised: Mar 27, 2009               Neptune                                899
+ 
+ PHYSICAL DATA (update 2009-May-26):
+  Mass (10^24 kg)       =   102.41        Density (g/cm^3)       =  1.638
+  Equat. radius (1 bar) = 24766+-15 km    Polar radius (km)      = 24342+-30
+  Volumetric mean radius= 24624+-21 km    Flattening             =  0.0171 
+
+  Rotation period       = 16.11+-0.01 hr  Rot. rate(10^-4 rad/s) =  1.083   
+  m = w^2a^3/GM         =  0.02609        Hydrostatic flat., fh  =  0.01804
+  Inferred rot. period  = 16.7+-1.4 hr    ks = 3*J2/m            =  0.407
+  Mom. of inert. I/MRo^2=                 I/MRo^2 (upper bound)  =  0.239 
+  Rocky core mass (Mc/M)=                 Y factor (He/H ratio)  =  0.235+-.040
+
+  GM (km^3/s^2)         = 6,835,107       GM 1-sigma (km^3/s^2)  = +-15 
+  Equ. grav, ge (m/s^2) = 11.15           Pol. grav, gp (m/s^2)  = 11.41+-0.03
+
+  Geometric albedo      =  0.41           Visual magnitude V(1,0)= -6.87
+  Vis. mag. (opposition)= +7.84           Obliquity to orbit     = 29.56 deg
+  Sidereal orbit period = 164.79132 yr    Sidereal orbit period  = 60190.029 d
+  Mean daily motion     = 0.006020076dg/d Mean orbit velocity    = 5.4778 km/s 
+
+  Atmos. temp. (1 bar)  =  72+-2 K        Heat flow/mass (x10^7) =  2 erg/gm*s
+  Planetary Solar Const =   1.47 W/m^2    Dipole tilt/offset     = 47deg/0.55Rp 
+  Escape velocity (km/s)=  23.5           Mag.dip.mom(gauss-Rp^3)= 0.133
+  Aroche(ice)/Rp        =  2.98           Hill's sphere rad., Rp = 4700
+
+
+
+*******************************************************************************
+Ephemeris / WWW_USER Fri Apr 13 08:35:56 2012 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Neptune (899)                   {source: NEP081}
+Center body name: Solar System Barycenter (0)     {source: DE405}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2012-Apr-13 00:00:00.0000 CT 
+Stop  time      : A.D. 2012-Apr-14 00:00:00.0000 CT 
+Step-size       : 0 steps
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+Output units    : KM-S                                                         
+Output format   : 02
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC cartesian states
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   X     Y     Z
+   VX    VY    VZ
+*******************************************************************************
+$$SOE
+2456030.500000000 = A.D. 2012-Apr-13 00:00:00.0000 (CT)
+ X = 3.915222374346482E+09 Y =-2.192557191435597E+09 Z =-4.507753066067544E+07
+ VX= 2.619122683916820E+00 VY= 4.774780457323611E+00 VZ=-1.580066537824685E-01
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning  
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      X      x-component of position vector (km)                               
+      Y      y-component of position vector (km)                               
+      Z      z-component of position vector (km)                               
+      VX     x-component of velocity vector (km/sec)                           
+      VY     y-component of velocity vector (km/sec)                           
+      VZ     z-component of velocity vector (km/sec)                           
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+######################## Other bodies #########################
+
+
+---- Pluto ----
+
+Revised: Aug 15, 2011             134340 Pluto                             999
+ 
+ Fit to all available observations.
+ FK5/J2000.0 helio. ecliptic osc. elements (AU, DAYS, DEG, period=Julian yrs):
+
+ EPOCH= 2454648.5 ! 2008-Jul-01.00 (CT)
+  EC= 2.566687011667356E-01 QR= 2.980651303494526E+01 TP=  2448174.216430557892
+  OM= 1.103600311387948E+02 W = 1.161890224972339E+02 IN= 1.709558287650895E+01
+  A = 4.009855777865089E+01 MA= 25.130588774518851 ADIST= 5.039060252235653E+01
+
+ PHYSICAL DATA (updated 2006-Feb-27):
+  Mass Pluto (10^22 kg) =   1.314+-0.018  Density Pluto:
+  GM (planet) km^3/s^2  =  870               (R = 1137+-8 km)   = 2.06 g/cm^3
+  Mass ratio (Mc/Mp)    = 0.12            Radius of Pluto, Rp   = 1151 km
+  Surface gravity       = 65.5 cm/s^2     Geometric albedo      = 0.3 
+  Sidereal orbit period = 247.92065 yr    Orbit velocity        = 4.749 km/s
+  Escape velocity (km/s)= 1.3
+
+
+
+
+*******************************************************************************
+Ephemeris / WWW_USER Fri Apr 13 08:37:11 2012 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Pluto (999)                     {source: PLU021}
+Center body name: Solar System Barycenter (0)     {source: DE405}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2012-Apr-13 00:00:00.0000 CT 
+Stop  time      : A.D. 2012-Apr-14 00:00:00.0000 CT 
+Step-size       : 0 steps
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+Output units    : KM-S                                                         
+Output format   : 02
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC cartesian states
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   X     Y     Z
+   VX    VY    VZ
+*******************************************************************************
+$$SOE
+2456030.500000000 = A.D. 2012-Apr-13 00:00:00.0000 (CT)
+ X = 6.395916429689567E+08 Y =-4.765270815621997E+09 Z = 3.249029270134427E+08
+ VX= 5.480036648837033E+00 VY=-3.713125438805441E-01 VZ=-1.562155101877877E+00
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning  
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      X      x-component of position vector (km)                               
+      Y      y-component of position vector (km)                               
+      Z      z-component of position vector (km)                               
+      VX     x-component of velocity vector (km/sec)                           
+      VY     y-component of velocity vector (km/sec)                           
+      VZ     z-component of velocity vector (km/sec)                           
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+
+
+
+
+
+
+
+
+
+
+
