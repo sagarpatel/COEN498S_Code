@@ -239,17 +239,15 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 		    unsigned long *tfptr = ((unsigned long *)&tempf) + 1;
 
 			tempf = tempTestXY[1];
-			*tfptr = (0xbfcdd90a - *tfptr)>>1; // estimate of 1/sqrt(tempTestXY[1]) 
+			*tfptr = (0xbfcdd90a00000000 - *tfptr)>>1; // estimate of 1/sqrt(tempTestXY[1]) 
 			tempTestXY[0] =  tempf;
 			tempTestZ[0] =  tempTestXY[1] * 0.5;                        // hoist out the /2    
 			tempTestXY[0] = (1.5 * tempTestXY[0]) - (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);         // iteration formula     
-			
-		//	tempTestXY[0] = (1.5 * tempTestXY[0]) – (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
-			/*
-			tempTestXY[0] = (1.5 * tempTestXY[0]) – (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
-			tempTestXY[0] = (1.5 * tempTestXY[0]) – (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
-			tempTestXY[0] = (1.5 * tempTestXY[0]) – (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
-		    */
+			tempTestXY[0] = (1.5 * tempTestXY[0]) - (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
+			tempTestXY[0] = (1.5 * tempTestXY[0]) - (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
+			tempTestXY[0] = (1.5 * tempTestXY[0]) - (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
+			tempTestXY[0] = (1.5 * tempTestXY[0]) - (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
+
 		    tempTestXY[1] = tempTestXY[0] * tempTestXY[1];
 
 		    printf("Result: %f\n", tempTestXY[1]);
