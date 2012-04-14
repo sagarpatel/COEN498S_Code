@@ -275,7 +275,7 @@ int main(int argc, char **argv)
 		}
 		if(pC == 1)
 		{
-
+			particle_Array_PPU[pC].positionZ[1] = earthMass;
 
 		}
 
@@ -283,7 +283,7 @@ int main(int argc, char **argv)
 		//particle_Array_PPU[pC].position = vec_splats((double)GRAVITATIONALCONSTANT); --> use splats, seems faster
 		
 		printf("Particle %d:   ", pC );
-		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[pC].positionXY[0], particle_Array_PPU[pC].positionXY[1], particle_Array_PPU[pC].positionZ[0], particle_Array_PPU[pC].velocityZ[1]);
+		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[pC].positionXY[0], particle_Array_PPU[pC].positionXY[1], particle_Array_PPU[pC].positionZ[0], particle_Array_PPU[pC].positionZ[1]);
 		printf("\n");
 		
 	}
@@ -475,7 +475,7 @@ int main(int argc, char **argv)
 	{
 
 		printf("Particle %d positions:   ", i );
-		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[i].positionXY[0], particle_Array_PPU[i].positionXY[1], particle_Array_PPU[i].positionZ[0], particle_Array_PPU[i].velocityZ[1]);
+		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[i].positionXY[0], particle_Array_PPU[i].positionXY[1], particle_Array_PPU[i].positionZ[0], particle_Array_PPU[i].positionZ[1]);
 		printf("\n");
 	
 	}-

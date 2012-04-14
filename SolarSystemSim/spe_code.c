@@ -9,6 +9,12 @@
 
 #include "common.h"
 
+#include <math.h>
+
+// hack for double  resqrt since YDL SDK install is incompetent
+
+
+
 
 
 
@@ -100,11 +106,12 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	__vector double distanceVectorXY = {0,0};
 	__vector double distanceVectorZ = {0,0};
 
-	__vector double tempTestXY[2];
-	__vector double tempTestZ[2];
+	__vector double tempTestXY = {0,0};
+	__vector double tempTestZ = {0,0};
+	__vector double temp_tempf= {0,0};
 
-	__vector double tempPositionXY[2];
-	__vector double tempPositionZ[2];
+	__vector double tempPositionXY = {0,0};
+	__vector double tempPositionZ = {0,0};
 
 	//stupid C99, need to declare indicies before for loops
 	int i = 0;
@@ -220,6 +227,34 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			tempDistanceXYZ =  spu_add(tempDistanceXYZ, tempEPS); //this is now the denominator value
 
 			//save inverse magnitude for unit vector later
+
+	
+	/// from http://www.azillionmonkeys.com/qed/sqroot.html
+
+			tempTestXY[1] = tempDistanceXYZ[0];
+			printf("Before square root: %f\n",tempTestXY[1] );
+
+	        //double x, z, tempf;
+			double tempf;
+		    unsigned long *tfptr = ((unsigned long *)&tempf) + 1;
+
+			tempf = tempTestXY[1];
+			*tfptr = (0xbfcdd90a - *tfptr)>>1; // estimate of 1/sqrt(tempTestXY[1]) 
+			tempTestXY[0] =  tempf;
+			tempTestZ[0] =  tempTestXY[1] * 0.5;                        // hoist out the /2    
+			tempTestXY[0] = (1.5 * tempTestXY[0]) - (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);         // iteration formula     
+			
+		//	tempTestXY[0] = (1.5 * tempTestXY[0]) – (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
+			/*
+			tempTestXY[0] = (1.5 * tempTestXY[0]) – (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
+			tempTestXY[0] = (1.5 * tempTestXY[0]) – (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
+			tempTestXY[0] = (1.5 * tempTestXY[0]) – (tempTestXY[0] * tempTestXY[0]) * (tempTestXY[0] * tempTestZ[0]);
+		    */
+		    tempTestXY[1] = tempTestXY[0] * tempTestXY[1];
+
+		    printf("Result: %f\n", tempTestXY[1]);
+
+
 /*			
 			
 			tempUnitVectorXY = spu_rsqrte(tempDistanceXY);
@@ -320,13 +355,31 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 		tempPositionXY = spu_mul(tempVelocityXY, tempDELATTIME);
 
+
 		tempTestXY[0] = particle_Array_SPU[i].positionXY[0];
 		tempTestXY[1] = particle_Array_SPU[i].positionXY[1];
 
-		particle_Array_SPU[i].positionXY = spu_add(tempPositionXY, tempTestXY);
+		particle_Array_SPU[i].positionXY[0] = spu_add(tempPositionXY, tempTestXY)[0];
+		particle_Array_SPU[i].positionXY[1] = spu_add(tempPositionXY, tempTestXY)[1];
 
-		tempPositionZ = spu_mul(particle_Array_SPU[i].velocityZ, tempDELATTIME);
-		particle_Array_SPU[i].positionZ = spu_add(tempPositionZ, particle_Array_SPU[i].positionZ);
+
+
+
+
+
+		tempVelocityZ[0] = particle_Array_SPU[i].velocityZ[0];
+		tempVelocityZ[1] = particle_Array_SPU[i].velocityZ[1];
+
+		tempPositionZ = spu_mul(tempVelocityZ, tempDELATTIME);
+
+		tempTestZ[0] = particle_Array_SPU[i].positionZ[0];
+		tempTestZ[1] = particle_Array_SPU[i].positionZ[1];
+
+
+		particle_Array_SPU[i].positionZ[0] = spu_add(tempPositionZ, tempTestZ)[0];
+		particle_Array_SPU[i].positionZ[1] = spu_add(tempPositionZ, tempTestZ)[1];
+
+
 		/*
 		printf("Particle %d positions:   ", i );
 		printf("x= %f, y=%f, z=%f", particle_Array_SPU[i].position[0], particle_Array_SPU[i].position[1], particle_Array_SPU[i].position[2]);
