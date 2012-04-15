@@ -20,10 +20,12 @@
 
 typedef struct 
 {
-	 float position[4];	// includes x,y,z --> 4th vector element will be used to store quadrant id of the particle
-	 float velocity[4];	// || --> 4th element will be used for mass value of the particle
+	 double positionXY[2];
+	 double positionZ[2];	// || --> 2nd element will be used for mass value of the particle
+	 double velocityXY[2];	
+	 double velocityZ[2]; // last element currently unsued, could store some information
 } 
-particle_Data_Shared;
+particle_Data;
 
 
 // all masses will be scaled down by 10^10 each to match G scale up
