@@ -7,13 +7,14 @@
 
 #define PARTICLES_MAXCOUNT 2 //must be power of 2 in orderfor array data align to work later on
 #define PARTICLES_DEFAULTMASS 10.0 // 1.0 is 1 kg
-#define GRAVITATIONALCONSTANT   0.000006673 //0.00000000006673 real value is 6.673 * 10^-11
+#define GRAVITATIONALCONSTANT   0.00000000006673 //0.00000000006673 real value is 6.673 * 10^-11
 #define DELTA_TIME 60
 #define GRID_SIZE 100 // grid is a +- GRID_SIZE/2 cube
 #define EPS 0.001 // EPS^2 constant to avoid singularities
 #define ITERATION_COUNT 10
 
 #define MINFLOATVALUE 1E-37
+
 
 #define SPU_COUNT 6 // numbers of spus that will be used
 
@@ -27,7 +28,7 @@ particle_Data_Shared;
 
 // all masses will be scaled down by 10^10 each to match G scale up
 
-int scaleFactor_Mass = 10;
+float scaleFactor_Mass = 20.0f;
 
 //float GRAVITATIONALCONSTANT = 6.673 * pow(10, -5);
 float sunMass = 1.9891 * pow(10,20); // original is 1.9891 * 10^30 kg

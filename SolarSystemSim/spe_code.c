@@ -90,7 +90,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	__vector float tempUnitVector = {0,0,0,0};
 	__vector float distanceVector = {0,0,0,0};
 
-
+	__vector float scaleVector = {scaleFactor_Mass, scaleFactor_Mass, scaleFactor_Mass, scaleFactor_Mass};
 
 	//stupid C99, need to declare indicies before for loops
 	int i = 0;
@@ -158,7 +158,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			//printf("Mass of particle: %d: %f\n",j, pDj.velocity[3] );
 
 			tempMassSplat = spu_splats((float)pDj.velocity[3]); //mass is stored in the last element (3) of velocity vector
-			tempNumerator = spu_madd(tempMassSplat, tempGConstant, zeroVector);
+			tempNumerator = spu_mul(tempMassSplat, tempGConstant);
 			
 
 			/*
@@ -173,7 +173,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 		// denominator part
 			// sqaure each component, x,y,z beforehand
-			tempDistance = spu_madd(tempDistance, tempDistance, zeroVector);
+			tempDistance = spu_mul(tempDistance, tempDistance);
 
 			//using perm instead of rotate, bleurg
 			//tempDistanceRL1 = spu_perm(tempDistance, zeroVector, yzxwMask); // imitates lxfloat left rotate
@@ -225,22 +225,22 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			*/
 
 			//total acceleration applied to particle i, by particle j
-			tempAcceleration = spu_madd(tempDistance, tempNumerator, zeroVector);
+			tempAcceleration = spu_mul(tempDistance, tempNumerator);
 			
 			// create unit vector
-			tempUnitVector = spu_madd(distanceVector, tempUnitVector, zeroVector);
+			tempUnitVector = spu_mul(distanceVector, tempUnitVector);
 			
 			// apply unit vector to acceleration
-			tempAcceleration = spu_madd(tempUnitVector, tempAcceleration, zeroVector);
+			tempAcceleration = spu_mul(tempUnitVector, tempAcceleration);
 
 			//Print  accell
-			/*
-			if(pDi.velocity[3] != pDj.velocity[3])
-			{
-				printf("Acceleration applied on particle: %d : x= %f, y=%f, z=%f", i, tempAcceleration[0], tempAcceleration[1], tempAcceleration[2]);
-				printf("\n");
-			}
-			*/
+			
+			tempAcceleration = spu_mul(tempAcceleration, scaleVector);			
+
+			printf("Acceleration applied on particle: %d by %d: x= %f, y=%f, z=%f", i, j, tempAcceleration[0], tempAcceleration[1], tempAcceleration[2]);
+			printf("\n");
+		
+
 
 			//increment velocity value of particle with a*dt
 			// need to explicitly call the array, since pDi is only a temp pass by value, doesn't change the particle

@@ -256,6 +256,8 @@ int main(int argc, char **argv)
 	printf("Min float: %f\n", MINFLOATVALUE);
 
 	printf("G: %f\n", GRAVITATIONALCONSTANT );
+	printf("G: %x\n", GRAVITATIONALCONSTANT );
+
 
 	float mult = sunMass * GRAVITATIONALCONSTANT;
 	
@@ -296,18 +298,15 @@ int main(int argc, char **argv)
 			particle_Array_PPU[pC].position = zeroVector;
 			particle_Array_PPU[pC].velocity = zeroVector; //initialVelocityVector_Y_minus;
 
-			float earthMass = 59736000000000000000.0f; // 5.9736 * pow(10,19);  // scaled for scaled G value  // original = 5.9736 * 10^24
-			printf("Earth mass: %f\n", earthMass );
-			particle_Array_PPU[pC].velocity[3] = earthMass; // PARTICLES_DEFAULTMASS * 500.0f;
+			particle_Array_PPU[pC].velocity[3] = sunMass; // PARTICLES_DEFAULTMASS * 500.0f;
 		}
 		if(pC == 1)
 		{
 			particle_Array_PPU[pC].position = issPosition; //initPositionVector;
 			particle_Array_PPU[pC].velocity = issVelocity; //initialVelocityVector_Y;
 
-			float issMass = 4.5; // original = 4.5 * 10^5
 
-			particle_Array_PPU[pC].velocity[3] = issMass; //PARTICLES_DEFAULTMASS * 500.0f;
+			particle_Array_PPU[pC].velocity[3] = jupiterMass; //PARTICLES_DEFAULTMASS * 500.0f;
 
 		}
 		else
