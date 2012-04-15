@@ -133,7 +133,6 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 		pDi = particle_Array_SPU[i];
 		massSave = pDi.velocity[3];
 
-
 		for(j = 0; j<PARTICLES_MAXCOUNT; ++j)
 		{
 
@@ -156,8 +155,6 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			distanceVector = tempDistance;
 
 
-
-
 			/*
 			 //Print distances between particles
 			printf("Particle %d:   ", i );
@@ -171,10 +168,8 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			//printf("Mass of particle: %d: %f\n",j, pDj.velocity[3] );
 
 			tempMassSplat = spu_splats((float)pDj.velocity[3]); //mass is stored in the last element (3) of velocity vector
-			tempNumerator = spu_madd(tempMassSplat, tempGConstant, zeroVector);
-			tempMassSplat = spu_splats((float)pDj.velocity[3]); //mass is stored in the last element (3) of velocity vector
 			tempNumerator = spu_mul(tempMassSplat, tempGConstant);
-			
+
 
 			/*
 			//Print numerator
@@ -182,13 +177,12 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			printf("x= %f, y=%f, z=%f", tempNumerator[0], tempNumerator[1], tempNumerator[2]);
 			printf("\n");
 			*/
-			 
+
 			 //Assembly for vector rotate
 			//__asm__("addi    4,4,1;");
 
 		// denominator part
 			// sqaure each component, x,y,z beforehand
-			tempDistance = spu_madd(tempDistance, tempDistance, zeroVector);
 			tempDistance = spu_mul(tempDistance, tempDistance);
 
 			//using perm instead of rotate, bleurg
@@ -200,12 +194,11 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			// need to test
 			//tempDistanceRL1 = spu_rlqw(tempDistance,1);
 			//tempDistanceRL2 = spu_rlqw(tempDistance,2);
-			
+
 			///\\\\ doing it manually
 			tempDistanceRL1[0] = tempDistance[1];
 			tempDistanceRL1[1] = tempDistance[2];
 			tempDistanceRL1[2] = tempDistance[0];
-
 
 			tempDistanceRL2[0] = tempDistance[2];
 			tempDistanceRL2[1] = tempDistance[0];
@@ -216,28 +209,22 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			printf("tempDistanceRL1: %f %f %f \n", tempDistanceRL1[0], tempDistanceRL1[1], tempDistanceRL1[2] );
 			printf("tempDistanceRL2: %f %f %f \n\n", tempDistanceRL2[0], tempDistanceRL2[1], tempDistanceRL2[2] );
 			*/
-			
+
 			//add both
 			tempDistanceRL1 = spu_add(tempDistanceRL1, tempDistanceRL2);
-
 			//add to original to get total ---> x+y+z
 			tempDistance = spu_add(tempDistance, tempDistanceRL1); //tempDistance is now total distance squared
 
-			
 			// add EPS to avoid singularity
 			tempDistance =  spu_add(tempDistance, tempEPS); //this is now the denominator value
-
 
 			//save inverse magnitude for unit vector later
 			tempUnitVector = spu_rsqrte(tempDistance);
 
 
-
 			// invert vector to avoid division later
 			tempDistance = spu_re(tempDistance); // this is final denominator (already inverted), only need to multiply
-
 			// tempDistance is now eqivalent to 1/r^2 
-
 
 
 			/*
@@ -248,42 +235,27 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			*/
 
 			//total acceleration applied to particle i, by particle j
-			tempAcceleration = spu_madd(tempDistance, tempNumerator, zeroVector);
 			tempAcceleration = spu_mul(tempDistance, tempNumerator);
-			
+
 			// create unit vector
-			tempUnitVector = spu_madd(distanceVector, tempUnitVector, zeroVector);
 			tempUnitVector = spu_mul(distanceVector, tempUnitVector);
-			
+
 			// apply unit vector to acceleration
-			tempAcceleration = spu_madd(tempUnitVector, tempAcceleration, zeroVector);
 			tempAcceleration = spu_mul(tempUnitVector, tempAcceleration);
 
-
 			//Print  accell
-			/*
-			if(pDi.velocity[3] != pDj.velocity[3])
-			{
-				printf("Acceleration applied on particle: %d : x= %f, y=%f, z=%f", i, tempAcceleration[0], tempAcceleration[1], tempAcceleration[2]);
-				printf("\n");
-			}
-			*/
-			
-			tempAcceleration = spu_mul(tempAcceleration, scaleVector);			
 
-			printf("Acceleration applied on particle: %d by %d: x= %f, y=%f, z=%f", i, j, tempAcceleration[0], tempAcceleration[1], tempAcceleration[2]);
+			/*
+			printf("Acceleration applied on particle: %d : x= %x, y=%x, z=%x", i, tempAcceleration[0], tempAcceleration[1], tempAcceleration[2]);
 			printf("\n");
-		
+			*/
 
 
 			//increment velocity value of particle with a*dt
 			// need to explicitly call the array, since pDi is only a temp pass by value, doesn't change the particle
 			particle_Array_SPU[i].velocity = spu_madd(tempAcceleration, tempDELATTIME, particle_Array_SPU[i].velocity);
-
-
 			//restore mass in right position, in case
 			particle_Array_SPU[i].velocity[3] = massSave;
-
 
 			/*
 			//Print velocity
@@ -299,7 +271,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			printf("\n");
 
 			*/
-			
+
 			//end of this loop
 		}
 		//printf("\n");
@@ -318,7 +290,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 		printf("x= %f, y=%f, z=%f", particle_Array_SPU[i].position[0], particle_Array_SPU[i].position[1], particle_Array_SPU[i].position[2]);
 		printf("\n");
 		*/
-	
+
 
 	}
 
@@ -342,4 +314,5 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
   return (0);
 }
+
 

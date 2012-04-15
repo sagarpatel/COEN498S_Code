@@ -11,7 +11,7 @@
 #define DELTA_TIME 60
 #define GRID_SIZE 100 // grid is a +- GRID_SIZE/2 cube
 #define EPS 0.001 // EPS^2 constant to avoid singularities
-#define ITERATION_COUNT 10
+#define ITERATION_COUNT 2
 
 #define MINFLOATVALUE 1E-37
 
@@ -36,6 +36,11 @@ float sunMass = 1.9891 * pow(10,20); // original is 1.9891 * 10^30 kg
 float earthMass = 5.9736 * pow(10,14); // original is 5.9736 * 10^24kg
 float jupiterMass = 1.898 * pow(10,17); //^27 original
 //float satMass = 1.0 * pow(10,-6);
+
+
+
+__vector float jupiterPosition = {476983627117, 573928339403, -13069236715, 0 };
+__vector float jupiterVelocity = {-10205, 8977,  191, 0 };
 
 
 

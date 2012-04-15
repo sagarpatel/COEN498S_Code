@@ -83,6 +83,7 @@ __vector float issPosition = {6761000,0,0,0};  //390000 m is high, need to add r
 __vector float issVelocity = {0,7707,0,0};
 
 
+
 int speNumber = 0;
 //particle_Data* speData;
 int i;
@@ -269,37 +270,23 @@ int main(int argc, char **argv)
 		{
 			// center, high mass
 
-			float earthMass = 59736000000000000000.0f; // 5.9736 * pow(10,19);  // scaled for scaled G value  // original = 5.9736 * 10^24
-			printf("Earth mass: %f\n", earthMass );
-			particle_Array_PPU[pC].velocity[3] = earthMass; // PARTICLES_DEFAULTMASS * 500.0f;
-		}
-		if(pC == 1)
-		{
-			particle_Array_PPU[pC].position = issPosition; //initPositionVector;
-			particle_Array_PPU[pC].velocity = issVelocity; //initialVelocityVector_Y;
 			particle_Array_PPU[pC].velocity[3] = sunMass; // PARTICLES_DEFAULTMASS * 500.0f;
 		}
 		if(pC == 1)
 		{
-			particle_Array_PPU[pC].position = issPosition; //initPositionVector;
-			particle_Array_PPU[pC].velocity = issVelocity; //initialVelocityVector_Y;
-
-			float issMass = 4.5; // original = 4.5 * 10^5
-
-			particle_Array_PPU[pC].velocity[3] = issMass; //PARTICLES_DEFAULTMASS * 500.0f;
-
-			particle_Array_PPU[pC].velocity[3] = jupiterMass; //PARTICLES_DEFAULTMASS * 500.0f;
-
+			particle_Array_PPU[pC].position = jupiterPosition; //initPositionVector;
+			particle_Array_PPU[pC].velocity = jupiterVelocity; //initialVelocityVector_Y;
+			particle_Array_PPU[pC].velocity[3] = jupiterMass; // PARTICLES_DEFAULTMASS * 500.0f;
 		}
 
 
 		//particle_Array_PPU[pC].position = vec_splat(particle_Array_PPU[pC].position, 1);
 
-		
+		/*
 		printf("Particle %d:   ", pC );
-
+		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2], particle_Array_PPU[pC].velocity[3]);
 		printf("\n");
-		
+		*/
 	}
 
 
@@ -486,6 +473,17 @@ int main(int argc, char **argv)
 	printf("Execution time:    %f\n",deltaTime);
 
 
+
+	printf("print out values from post spe calculations\n");
+	i = 0;
+	for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
+	{
+
+		printf("Particle %d positions:   ", i );
+		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[i].position[0], particle_Array_PPU[i].position[1], particle_Array_PPU[i].position[2], particle_Array_PPU[i].velocity[3]);
+		printf("\n");
+
+	}
 
 
 
