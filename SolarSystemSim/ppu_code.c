@@ -34,12 +34,6 @@ unsigned int entry = SPE_DEFAULT_ENTRY;
 spe_stop_info_t stop_info;
 
 
-typedef struct 
-{
-	__vector float position;	// includes x,y,z --> 4th vector element will be used to store quadrant id of the particle
-	__vector float velocity;	// || --> 4th element will be used for mass value of the particle
-} 
-particle_Data;
 
 // one iteration, used for calculations
 particle_Data particle_Array_PPU[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
@@ -254,24 +248,10 @@ int main(int argc, char **argv)
 	printf("Jupiter Mass: %f\n", jupiterMass );
 	//printf("Sat Mass: %f\n", satMass );
 
-	float mult = sunMass * earthMass * GRAVITATIONALCONSTANT;
-	printf("Min float: %f\n", MINFLOATVALUE);
-
 	printf("G: %f\n", GRAVITATIONALCONSTANT );
 	printf("G: %x\n", GRAVITATIONALCONSTANT );
 
 
-	float mult = sunMass * GRAVITATIONALCONSTANT;
-	
-	printf("Result: %f\n", mult );
-	printf("Sun * G: %f\n", mult );
-
-	mult = mult * jupiterMass;
-
-	printf("Jupiter * prev: %f\n", mult );
-
-	mult = mult * MINFLOATVALUE;
-	printf("Prev* min flaot : %f\n", mult);
 
 	//seed random generator
 	srand( time(NULL) );
@@ -284,16 +264,6 @@ int main(int argc, char **argv)
 		int grideSize = GRID_SIZE;
 
 	//	printf("\n grideSize/2: %d", grideSize/2);
-
-
-
-
-
-
-
-
-
-
 
 		if(pC == 0)
 		{
@@ -322,10 +292,6 @@ int main(int argc, char **argv)
 
 		}
 
-		{
-
-
-		}
 
 		//particle_Array_PPU[pC].position = vec_splat(particle_Array_PPU[pC].position, 1);
 
@@ -514,48 +480,45 @@ int main(int argc, char **argv)
 
 	struct timeval end;
 	gettimeofday(&end,NULL);
+	float deltaTime = ((end.tv_sec - start.tv_sec)*1000.0f + (end.tv_usec -start.tv_usec)/1000.0f);
 
 
-
-	printf("print out values from post spe calculations\n");
-	i = 0;
-	for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
-	{
-
-		printf("Particle %d positions:   ", i );
-
-		printf("\n");
-	
+	printf("Execution time:    %f\n",deltaTime);
 
 
 
 
 
 	FILE *filePointer;
+	filePointer = fopen("fileLog1.txt","w");
 
 
 	iterCount = 0;
 	for (iterCount = 0; iterCount< ITERATION_COUNT; iterCount++)
 	{
-
+	
 		fprintf(filePointer,"\n");
 
 		pC = 0;
 	    for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
 	    {
 
-
-
-
+	
+			fprintf(filePointer,"%f,",fullSimilationData[iterCount].particleArray[pC].position[0]);
+			fprintf(filePointer,"%f,",fullSimilationData[iterCount].particleArray[pC].position[1]);
+			fprintf(filePointer,"%f",fullSimilationData[iterCount].particleArray[pC].position[2]);
 
 			fprintf(filePointer,"|");
+	
 
+		}
 
-
+	
 	}
 
-	fclose(filePointer);
 
+
+	fclose(filePointer);
 
 	return 0;
 }

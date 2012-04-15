@@ -11,19 +11,6 @@
 
 
 
-typedef struct 
-{
-	__vector float position;	// includes x,y,z --> 4th vector element will be used to store quadrant id of the particle
-	__vector float velocity;	// || --> 4th element will be used for mass value of the particle
-} 
-particle_Data;
-
-
-
-
-
-
-
 volatile particle_Data particle_Array_SPU[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
 
 
@@ -95,19 +82,6 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 	__vector unsigned int oneVector = {1,1,1,1};
 
 	__vector unsigned int axisBitShiftMask = {0,1,2,0};
@@ -121,9 +95,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	__vector float distanceVector = {0,0,0,0};
 
 
-
-
-	__vector float scaleVector = {scaleFactor_Mass, scaleFactor_Mass, scaleFactor_Mass, scaleFactor_Mass};
+	__vector float scaleVector = {MASSSCALEFACTOR, MASSSCALEFACTOR, MASSSCALEFACTOR, MASSSCALEFACTOR};
 
 
 
@@ -179,18 +151,6 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			*/
 
 			tempDistance = spu_sub(pDj.position,pDi.position); //actual distance vector between objects i and j
-			
-
-
-
-
-
-
-
-
-
-
-
 
 			// save value for unit vector calculation later
 			distanceVector = tempDistance;
@@ -273,37 +233,6 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 			// invert vector to avoid division later
 			tempDistance = spu_re(tempDistance); // this is final denominator (already inverted), only need to multiply
 
@@ -352,24 +281,6 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			particle_Array_SPU[i].velocity = spu_madd(tempAcceleration, tempDELATTIME, particle_Array_SPU[i].velocity);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 			//restore mass in right position, in case
 			particle_Array_SPU[i].velocity[3] = massSave;
 
@@ -401,37 +312,6 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 		//incrementing position with v*dt
 		// spu_madd is awesome, it all gets done in one line! emulated the += operator, kinda, but more flexible
 		particle_Array_SPU[i].position = spu_madd(particle_Array_SPU[i].velocity, tempDELATTIME, particle_Array_SPU[i].position);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 		/*
 		printf("Particle %d positions:   ", i );

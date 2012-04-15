@@ -15,22 +15,21 @@
 
 #define MINFLOATVALUE 1E-37
 
+#define MASSSCALEFACTOR 1E20
 
 #define SPU_COUNT 6 // numbers of spus that will be used
 
 typedef struct 
 {
-	 double positionXY[2];
-	 double positionZ[2];	// || --> 2nd element will be used for mass value of the particle
-	 double velocityXY[2];	
-	 double velocityZ[2]; // last element currently unsued, could store some information
+	__vector float position;	// includes x,y,z --> 4th vector element will be used to store quadrant id of the particle
+	__vector float velocity;	// || --> 4th element will be used for mass value of the particle
 } 
 particle_Data;
 
 
 // all masses will be scaled down by 10^10 each to match G scale up
 
-float scaleFactor_Mass = 20.0f;
+
 
 //float GRAVITATIONALCONSTANT = 6.673 * pow(10, -5);
 float sunMass = 1.9891 * pow(10,20); // original is 1.9891 * 10^30 kg
