@@ -250,12 +250,23 @@ int main(int argc, char **argv)
 
 	printf("Sun Mass: %f\n",sunMass );
 	printf("Earth Mass: %f\n",earthMass );
+	printf("Jupiter Mass: %f\n", jupiterMass );
+	//printf("Sat Mass: %f\n", satMass );
 
-	float mult = sunMass * earthMass * GRAVITATIONALCONSTANT;
+	printf("Min float: %f\n", MINFLOATVALUE);
+
+	printf("G: %f\n", GRAVITATIONALCONSTANT );
+
+	float mult = sunMass * GRAVITATIONALCONSTANT;
 	
-	printf("Result: %f\n", mult );
+	printf("Sun * G: %f\n", mult );
 
+	mult = mult * jupiterMass;
 
+	printf("Jupiter * prev: %f\n", mult );
+
+	mult = mult * MINFLOATVALUE;
+	printf("Prev* min flaot : %f\n", mult);
 
 	//seed random generator
 	srand( time(NULL) );
