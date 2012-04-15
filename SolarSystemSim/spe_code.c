@@ -95,10 +95,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	__vector float distanceVector = {0,0,0,0};
 
 
-	__vector float scaleVector = {MASSSCALEFACTOR, MASSSCALEFACTOR, MASSSCALEFACTOR, MASSSCALEFACTOR};
-
-
-
+	__vector float massScaleVector = {MASSSCALEFACTOR, MASSSCALEFACTOR, MASSSCALEFACTOR, MASSSCALEFACTOR};
 
 
 	//stupid C99, need to declare indicies before for loops
@@ -244,6 +241,8 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			tempAcceleration = spu_mul(tempUnitVector, tempAcceleration);
 
 			//Print  accell
+
+			tempAcceleration = spu_mul(tempAcceleration,massScaleVector);
 
 			/*
 			printf("Acceleration applied on particle: %d : x= %x, y=%x, z=%x", i, tempAcceleration[0], tempAcceleration[1], tempAcceleration[2]);

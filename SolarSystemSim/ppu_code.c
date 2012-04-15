@@ -252,7 +252,7 @@ int main(int argc, char **argv)
 	printf("G: %f\n", GRAVITATIONALCONSTANT );
 	printf("G: %x\n", GRAVITATIONALCONSTANT );
 
-
+	printf("MASSSCALE: %f \n", MASSSCALEFACTOR);
 
 	//seed random generator
 	srand( time(NULL) );
@@ -274,6 +274,14 @@ int main(int argc, char **argv)
 		}
 		if(pC == 1)
 		{
+
+			/*
+			particle_Array_PPU[pC].position = earthPosition; //initPositionVector;
+			particle_Array_PPU[pC].velocity = earthVelocity; //initialVelocityVector_Y;
+			particle_Array_PPU[pC].velocity[3] = earthMass; // PARTICLES_DEFAULTMASS * 500.0f;
+			*/
+
+
 			particle_Array_PPU[pC].position = jupiterPosition; //initPositionVector;
 			particle_Array_PPU[pC].velocity = jupiterVelocity; //initialVelocityVector_Y;
 			particle_Array_PPU[pC].velocity[3] = jupiterMass; // PARTICLES_DEFAULTMASS * 500.0f;
@@ -282,11 +290,11 @@ int main(int argc, char **argv)
 
 		//particle_Array_PPU[pC].position = vec_splat(particle_Array_PPU[pC].position, 1);
 
-		/*
+		
 		printf("Particle %d:   ", pC );
 		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2], particle_Array_PPU[pC].velocity[3]);
 		printf("\n");
-		*/
+		
 	}
 
 
