@@ -1,3 +1,27 @@
+/*
+Sagar Patel
+9356037
+
+
+ Copyright (C) 2012  Sagar Patel
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+
+
 //PPU code 
 
 #include <sched.h>
@@ -87,6 +111,9 @@ __vector float initialVelocityVector_Y_minus = {0, -0.05f, 0, PARTICLES_DEFAULTM
 
 // mass scale down is ^-5
 
+float earthMass = 59736000000000000000.0f; // 5.9736 * pow(10,19);  // scaled for scaled G value  // original = 5.9736 * 10^24
+
+
 __vector float issPosition = {6721000,0,0,0};  //350000 m is high, need to add radius of earth 6371000 // addition is 6761000
 __vector float issVelocity = {0,7707,0,0};
 float issMass = 4.5; // original = 4.5 * 10^5
@@ -112,6 +139,16 @@ __vector float sat3Velocity = {-7500, 0, 0,0};
 
 __vector float sat4Position = {0,-6930000, 0, 0}; //559000m high, need to add earth radius
 __vector float sat4Velocity = {7500, 0, 0,0};
+
+
+/* Moon data, from: http://ssd.jpl.nasa.gov/horizons.cgi#results
+ X = 1.142141171615604E+05 Y =-3.591656526588580E+05 Z = 2.279788111025651E+04
+ VX= 1.002213369349858E+00 VY= 2.572033783875429E-01 VZ= 7.321967853480284E-02
+ */
+
+__vector float moonPosition = {114214117, -359165652, 22797881, 0};
+__vector float moonVelocity = {1002, 257, 73};
+float moonMass = 734900000000000000.0f; // original mass 7.349 * 10^22 
 
 
 
@@ -305,7 +342,6 @@ int main(int argc, char **argv)
 			particle_Array_PPU[pC].position = zeroVector;
 			particle_Array_PPU[pC].velocity = zeroVector; //initialVelocityVector_Y_minus;
 
-			float earthMass = 59736000000000000000.0f; // 5.9736 * pow(10,19);  // scaled for scaled G value  // original = 5.9736 * 10^24
 			printf("Earth mass: %f\n", earthMass );
 			particle_Array_PPU[pC].velocity[3] = earthMass; // PARTICLES_DEFAULTMASS * 500.0f;
 		}
@@ -351,6 +387,15 @@ int main(int argc, char **argv)
 
 
 			particle_Array_PPU[pC].velocity[3] = satMass; 
+
+		}
+		if(pC == 6)
+		{
+			particle_Array_PPU[pC].position = moonPosition; //initPositionVector;
+			particle_Array_PPU[pC].velocity = moonVelocity; //initialVelocityVector_Y;
+
+
+			particle_Array_PPU[pC].velocity[3] = moonMass; 
 
 		}
 		else
