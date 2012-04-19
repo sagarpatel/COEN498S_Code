@@ -112,14 +112,14 @@ __vector float initialVelocityVector_Y_minus = {0, -0.05f, 0, PARTICLES_DEFAULTM
 int speNumber = 0;
 
 
-
+/*
 spe_context_ptr_t contextPointerSPE1;
 spe_context_ptr_t contextPointerSPE2;
 spe_context_ptr_t contextPointerSPE3;
 spe_context_ptr_t contextPointerSPE4;
 spe_context_ptr_t contextPointerSPE5;
 spe_context_ptr_t contextPointerSPE6;
-
+*/
 
 int contextReadySPE1 = 0;
 int contextReadySPE2 = 0;
@@ -127,6 +127,9 @@ int contextReadySPE3 = 0;
 int contextReadySPE4 = 0;
 int contextReadySPE5 = 0;
 int contextReadySPE6 = 0;
+
+
+int contextArray[6];
 
 
 //particle_Data* speData;
@@ -143,7 +146,7 @@ void *spe_code_launch_1(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
-	contextPointerSPE1 = my_context;
+	contextArray[0] = my_context;
 	contextReadySPE1 = 1;
 
 	//printf("FROM LAUNCHER my_contextSPE1: %x\n", my_context );
@@ -173,7 +176,7 @@ void *spe_code_launch_2(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
-	contextPointerSPE2 = my_context;
+	contextArray[1] = my_context;
 	contextReadySPE2 = 1;
 
 //	printf("context created\n");
@@ -200,7 +203,7 @@ void *spe_code_launch_3(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
-	contextPointerSPE3 = my_context;
+	contextArray[2] = my_context;
 	contextReadySPE3 = 1;
 
 //	printf("context created\n");
@@ -228,7 +231,7 @@ void *spe_code_launch_4(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
-	contextPointerSPE4 = my_context;
+	contextArray[3] = my_context;
 	contextReadySPE4 = 1;
 
 //	printf("context created\n");
@@ -256,7 +259,7 @@ void *spe_code_launch_5(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
-	contextPointerSPE5 = my_context;
+	contextArray[4] = my_context;
 	contextReadySPE5 = 1;
 
 //	printf("context created\n");
@@ -284,7 +287,7 @@ void *spe_code_launch_6(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
-	contextPointerSPE6 = my_context;
+	contextArray[5] = my_context;
 	contextReadySPE6 = 1;
 
 //	printf("context created\n");
@@ -414,18 +417,20 @@ int main(int argc, char **argv)
 	unsigned int speMsgArray[6];
 	int speCounter = 0;	
 
+
 	while( (speMsgArray[0] != KILLOPCODE) || (speMsgArray[1] != KILLOPCODE) || (speMsgArray[2] != KILLOPCODE) || (speMsgArray[3] != KILLOPCODE) || (speMsgArray[4] != KILLOPCODE) || (speMsgArray[5] != KILLOPCODE) )
 	{
 
 		//printf("In main while\n");
 		
 		// from http://www.ibm.com/developerworks/power/library/pa-tacklecell2/index.html
-		spe_out_mbox_read(contextPointerSPE1, &speMsgArray[0], 1);
-		spe_out_mbox_read(contextPointerSPE2, &speMsgArray[1], 1);
-		spe_out_mbox_read(contextPointerSPE3, &speMsgArray[2], 1);
-		spe_out_mbox_read(contextPointerSPE4, &speMsgArray[3], 1);
-		spe_out_mbox_read(contextPointerSPE5, &speMsgArray[4], 1);
-		spe_out_mbox_read(contextPointerSPE6, &speMsgArray[5], 1);
+		
+		int cc;
+		// read mailboxes
+		for(cc = 0; cc < SPU_COUNT; cc++)
+		{
+			spe_out_mbox_read(contextArray[cc], &speMsgArray[cc], 1);
+		}
 
 		//printf("After all reads\n");
 
@@ -456,7 +461,9 @@ int main(int argc, char **argv)
 
 				}
 		//		printf("After transcription loop\n");
-
+				// let spu know transfer is done, it can proced to next iteration
+				int ok = 1;
+				//spe_in_mbox_write(contextArray[cc], &ok, 1, SPE_MBOX_ANY_NONBLOCKING);
 			}
 			
 

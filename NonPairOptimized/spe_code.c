@@ -338,7 +338,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	  	spu_write_out_mbox(dmaCounter);
 	  //	printf("Sent out message from: %d\n", (int)envp );
 
-
+	 // 	unsigned int waitSig = spu_read_in_mbox(); // wait for okay from PPU
 
   }
 

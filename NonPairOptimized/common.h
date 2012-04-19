@@ -35,7 +35,7 @@ Sagar Patel
 #define GRID_SIZE 100 // grid is a +- GRID_SIZE/2 cube
 #define EPS 0.001 // EPS^2 constant to avoid singularities
 
-#define ITERATION_COUNT 14000//8640  //has to be >= PARTICLE_DMA_MAX
+#define ITERATION_COUNT 4000//8640  //has to be >= PARTICLE_DMA_MAX
 
 
 #define PARTICLE_DMA_MAX 1024
