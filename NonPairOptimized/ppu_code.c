@@ -153,6 +153,25 @@ float moonMass = 734900000000000000.0f; // original mass 7.349 * 10^22
 
 
 int speNumber = 0;
+
+
+
+spe_context_ptr_t contextPointerSPE1;
+spe_context_ptr_t contextPointerSPE2;
+spe_context_ptr_t contextPointerSPE3;
+spe_context_ptr_t contextPointerSPE4;
+spe_context_ptr_t contextPointerSPE5;
+spe_context_ptr_t contextPointerSPE6;
+
+
+int contextReadySPE1 = 0;
+int contextReadySPE2 = 0;
+int contextReadySPE3 = 0;
+int contextReadySPE4 = 0;
+int contextReadySPE5 = 0;
+int contextReadySPE6 = 0;
+
+
 //particle_Data* speData;
 int i;
 // based off http://www.ibm.com/developerworks/library/pa-libspe2/
@@ -167,6 +186,11 @@ void *spe_code_launch_1(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
+	contextPointerSPE1 = my_context;
+	contextReadySPE1 = 1;
+
+	//printf("FROM LAUNCHER my_contextSPE1: %x\n", my_context );
+
 //	printf("context created\n");
 	/* Load the embedded code into this context */
 	spe_program_load(my_context, &spe_code);
@@ -175,6 +199,7 @@ void *spe_code_launch_1(void *data)
 	do 
 	{	
 		retval = spe_context_run(my_context, &entry_point, 0, spe1_Data, 1, NULL);
+		contextReadySPE1 = 1;
 	} 
 	while (retval > 0); /* Run until exit or error */
 	spe_context_destroy(my_context);	
@@ -191,6 +216,9 @@ void *spe_code_launch_2(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
+	contextPointerSPE2 = my_context;
+	contextReadySPE2 = 1;
+
 //	printf("context created\n");
 	/* Load the embedded code into this context */
 	spe_program_load(my_context, &spe_code);
@@ -215,6 +243,9 @@ void *spe_code_launch_3(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
+	contextPointerSPE3 = my_context;
+	contextReadySPE3 = 1;
+
 //	printf("context created\n");
 	/* Load the embedded code into this context */
 	spe_program_load(my_context, &spe_code);
@@ -223,6 +254,7 @@ void *spe_code_launch_3(void *data)
 	do 
 	{	
 		retval = spe_context_run(my_context, &entry_point, 0, spe3_Data, 3, NULL);
+		contextReadySPE3 = 1;
 	} 
 	while (retval > 0); /* Run until exit or error */
 	spe_context_destroy(my_context);	
@@ -239,6 +271,9 @@ void *spe_code_launch_4(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
+	contextPointerSPE4 = my_context;
+	contextReadySPE4 = 1;
+
 //	printf("context created\n");
 	/* Load the embedded code into this context */
 	spe_program_load(my_context, &spe_code);
@@ -247,6 +282,7 @@ void *spe_code_launch_4(void *data)
 	do 
 	{	
 		retval = spe_context_run(my_context, &entry_point, 0, spe4_Data, 4, NULL);
+		contextReadySPE4 = 1;
 	} 
 	while (retval > 0); /* Run until exit or error */
 	spe_context_destroy(my_context);	
@@ -263,6 +299,9 @@ void *spe_code_launch_5(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
+	contextPointerSPE5 = my_context;
+	contextReadySPE5 = 1;
+
 //	printf("context created\n");
 	/* Load the embedded code into this context */
 	spe_program_load(my_context, &spe_code);
@@ -271,6 +310,7 @@ void *spe_code_launch_5(void *data)
 	do 
 	{	
 		retval = spe_context_run(my_context, &entry_point, 0, spe5_Data, 5, NULL);
+		contextReadySPE5 = 1;
 	} 
 	while (retval > 0); /* Run until exit or error */
 	spe_context_destroy(my_context);	
@@ -287,6 +327,9 @@ void *spe_code_launch_6(void *data)
 //	printf("before creating context\n");
 	/* Create the SPE Context */
 	my_context = spe_context_create(SPE_EVENTS_ENABLE|SPE_MAP_PS, NULL);
+	contextPointerSPE6 = my_context;
+	contextReadySPE6 = 1;
+
 //	printf("context created\n");
 	/* Load the embedded code into this context */
 	spe_program_load(my_context, &spe_code);
@@ -295,6 +338,7 @@ void *spe_code_launch_6(void *data)
 	do 
 	{	
 		retval = spe_context_run(my_context, &entry_point, 0, spe6_Data, 6, NULL);
+		contextReadySPE6 = 1;
 	} 
 	while (retval > 0); /* Run until exit or error */
 	spe_context_destroy(my_context);	
@@ -310,9 +354,7 @@ int main(int argc, char **argv)
 // this is done in scalar fashion, NOT SIMD
 // insignificant to performance since it's only done once
 
-	//time_t startTime = time(NULL);
-
-
+	time_t startTime = time(NULL);
 
 	//seed random generator
 	srand( time(NULL) );
@@ -506,162 +548,214 @@ int main(int argc, char **argv)
 
 
 	int iterCount = 0;
-	for (iterCount = 0; iterCount< ITERATION_COUNT; iterCount++)
+
+
+	int retval;
+	pthread_t spe1_Thread;
+	pthread_t spe2_Thread;
+	pthread_t spe3_Thread;
+	pthread_t spe4_Thread;
+	pthread_t spe5_Thread;
+	pthread_t spe6_Thread;
+
+
+	//speData = spe1_Data;
+	speNumber = 0;
+	/* Create Thread */
+//	printf("spe1_Data value: %d\n", (int)spe1_Data );
+	retval = pthread_create(&spe1_Thread, // Thread object
+							NULL, // Thread attributes
+							spe_code_launch_1, // Thread function
+							NULL // Thread argument
+							);
+
+//	printf("spe2_Data value: %d\n", (int)spe2_Data );
+	
+	retval = pthread_create(&spe2_Thread, // Thread object
+							NULL, // Thread attributes
+							spe_code_launch_2, // Thread function
+							NULL // Thread argument
+							);
+	
+	
+	retval = pthread_create(&spe3_Thread, // Thread object
+							NULL, // Thread attributes
+							spe_code_launch_3, // Thread function
+							NULL // Thread argument
+							);
+
+	
+	retval = pthread_create(&spe4_Thread, // Thread object
+							NULL, // Thread attributes
+							spe_code_launch_4, // Thread function
+							NULL // Thread argument
+							);
+
+	retval = pthread_create(&spe5_Thread, // Thread object
+							NULL, // Thread attributes
+							spe_code_launch_5, // Thread function
+							NULL // Thread argument
+							);
+
+	retval = pthread_create(&spe6_Thread, // Thread object
+							NULL, // Thread attributes
+							spe_code_launch_6, // Thread function
+							NULL // Thread argument
+							);
+	
+
+
+
+	// wait for all SPEs to be started
+	while(contextReadySPE1 == 0 || contextReadySPE2 == 0 || contextReadySPE3 == 0 || contextReadySPE4 == 0 || contextReadySPE5 == 0 || contextReadySPE6 == 0 )
 	{
-
-		//printf("++++++++++++++ START of ITERATION # %d of %d +++++++++++++++\n", i, ITERATION_COUNT );
-
-		int retval;
-		pthread_t spe1_Thread;
-		pthread_t spe2_Thread;
-		pthread_t spe3_Thread;
-		pthread_t spe4_Thread;
-		pthread_t spe5_Thread;
-		pthread_t spe6_Thread;
+		printf("Waiting for all start\n");
+	}
 
 
-		//speData = spe1_Data;
-		speNumber = 0;
-		/* Create Thread */
-	//	printf("spe1_Data value: %d\n", (int)spe1_Data );
-		retval = pthread_create(&spe1_Thread, // Thread object
-								NULL, // Thread attributes
-								spe_code_launch_1, // Thread function
-								NULL // Thread argument
-								);
 
-	//	printf("spe2_Data value: %d\n", (int)spe2_Data );
+	unsigned int test  = 0;
+	printf("&test: %x\n", &test );
+	unsigned int *testPtr = &test;
+
+	while(test == 0)
+	{
 		
-		retval = pthread_create(&spe2_Thread, // Thread object
-								NULL, // Thread attributes
-								spe_code_launch_2, // Thread function
-								NULL // Thread argument
-								);
+		// from http://www.ibm.com/developerworks/power/library/pa-tacklecell2/index.html
+		printf("contexttextPointerSPE1: %x\n", contextPointerSPE1 );
+		printf("contexttextPointerSPE2: %x\n", contextPointerSPE2 );
+		printf("contexttextPointerSPE3: %x\n", contextPointerSPE3 );
+		printf("contexttextPointerSPE4: %x\n", contextPointerSPE4 );
+		printf("contexttextPointerSPE5: %x\n", contextPointerSPE5 );
+		printf("contexttextPointerSPE6: %x\n", contextPointerSPE6 );
+
+
+		printf("&test: %x\n", &test );
+		printf("testPtr: %x\n", testPtr );
+		spe_out_mbox_read(contextPointerSPE1, testPtr, 1);//, SPE_MBOX_ALL_BLOCKING );
+		printf("After 1\n");
+/*
+		spe_out_mbox_read(contextPointerSPE2, &test, 1);
+		printf("After 2\n");
+
+		spe_out_mbox_read(contextPointerSPE3, &test, 1);
+		printf("After 3\n");
+
+		spe_out_mbox_read(contextPointerSPE4, &test, 1);
+		printf("After 4\n");
+
+		spe_out_mbox_read(contextPointerSPE5, &test, 1);
+		printf("After 5\n");
+
+		spe_out_mbox_read(contextPointerSPE6, &test, 1);
+		printf("After 6\n");
 		
-		
-		retval = pthread_create(&spe3_Thread, // Thread object
-								NULL, // Thread attributes
-								spe_code_launch_3, // Thread function
-								NULL // Thread argument
-								);
+*/
 
-		
-		retval = pthread_create(&spe4_Thread, // Thread object
-								NULL, // Thread attributes
-								spe_code_launch_4, // Thread function
-								NULL // Thread argument
-								);
-
-		retval = pthread_create(&spe5_Thread, // Thread object
-								NULL, // Thread attributes
-								spe_code_launch_5, // Thread function
-								NULL // Thread argument
-								);
-
-		retval = pthread_create(&spe6_Thread, // Thread object
-								NULL, // Thread attributes
-								spe_code_launch_6, // Thread function
-								NULL // Thread argument
-								);
-		
-
-
-		//Wait for Thread Completion
-		retval = pthread_join(spe1_Thread, NULL);
-
-
-		retval = pthread_join(spe2_Thread, NULL);
-
-		
-		retval = pthread_join(spe3_Thread, NULL);
-
-		retval = pthread_join(spe4_Thread, NULL);
-		
-		retval = pthread_join(spe5_Thread, NULL);
-		
-		retval = pthread_join(spe6_Thread, NULL);
-		
-
-		
-		speNumber = 1;
-		
-		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
-		{
-			particle_Array_PPU[i] = spe1_Data[i];
-		}
-
-		speNumber = 2;
-		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
-		{
-			particle_Array_PPU[i] = spe2_Data[i];
-		}
-
-		speNumber = 3;
-		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
-		{
-			particle_Array_PPU[i] = spe3_Data[i];
-		}
-
-		speNumber = 4;
-		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
-		{
-			particle_Array_PPU[i] = spe4_Data[i];
-		}
-
-		speNumber = 5;
-		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
-		{
-			particle_Array_PPU[i] = spe5_Data[i];
-		}
-
-		speNumber = 6;
-		for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<PARTICLES_MAXCOUNT; ++i)
-		{
-			particle_Array_PPU[i] = spe6_Data[i];
-		}
-
-		// reset spe counter
-		speNumber = 0;
-		
-
-
-		// copy arrays into spe ones
-		pC = 0;
-		for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
-		{
-
-			spe1_Data[pC] = particle_Array_PPU[pC];	
-			spe2_Data[pC] = particle_Array_PPU[pC];	
-			spe3_Data[pC] = particle_Array_PPU[pC];	
-			spe4_Data[pC] = particle_Array_PPU[pC];	
-			spe5_Data[pC] = particle_Array_PPU[pC];	
-			spe6_Data[pC] = particle_Array_PPU[pC];	
-
-
-			// update values for shared array (graphics)
-			/*
-			particle_Array_Shared[pC].position[0] = particle_Array_PPU[pC].position[0];
-			particle_Array_Shared[pC].position[1] = particle_Array_PPU[pC].position[1];
-			particle_Array_Shared[pC].position[2] = particle_Array_PPU[pC].position[2];
-			particle_Array_Shared[pC].position[3] = particle_Array_PPU[pC].position[3];
-			*/
-
-			/*		
-			printf("Particle %d positions:   ", pC );
-			printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2], particle_Array_PPU[pC].velocity[3]);
-			printf("\n");
-			*/
-
-
-			fullSimilationData[iterCount].particleArray[pC]= particle_Array_PPU[pC];
-		}
-
-		
-
-	//	printf("++++++++++++++ END of ITERATION # %d of %d +++++++++++++++\n", iterCount, ITERATION_COUNT );
+		printf("Test: %d\n", test );
 
 
 	}
+	//test = 0;
+
+
+	printf("Out of while msg\n");
+
+/*
+	//Wait for Thread Completion
+	retval = pthread_join(spe1_Thread, NULL);
+
+
+	retval = pthread_join(spe2_Thread, NULL);
+
+	
+	retval = pthread_join(spe3_Thread, NULL);
+
+	retval = pthread_join(spe4_Thread, NULL);
+	
+	retval = pthread_join(spe5_Thread, NULL);
+	
+	retval = pthread_join(spe6_Thread, NULL);
+	*/
+
+	printf("After thread join\n");
+
+		
+	speNumber = 1;
+	
+	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
+	{
+		particle_Array_PPU[i] = spe1_Data[i];
+	}
+
+	speNumber = 2;
+	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
+	{
+		particle_Array_PPU[i] = spe2_Data[i];
+	}
+
+	speNumber = 3;
+	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
+	{
+		particle_Array_PPU[i] = spe3_Data[i];
+	}
+
+	speNumber = 4;
+	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
+	{
+		particle_Array_PPU[i] = spe4_Data[i];
+	}
+
+	speNumber = 5;
+	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
+	{
+		particle_Array_PPU[i] = spe5_Data[i];
+	}
+
+	speNumber = 6;
+	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<PARTICLES_MAXCOUNT; ++i)
+	{
+		particle_Array_PPU[i] = spe6_Data[i];
+	}
+
+	// reset spe counter
+	speNumber = 0;
+	
+
+
+	// copy arrays into spe ones
+	pC = 0;
+	for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
+	{
+
+		spe1_Data[pC] = particle_Array_PPU[pC];	
+		spe2_Data[pC] = particle_Array_PPU[pC];	
+		spe3_Data[pC] = particle_Array_PPU[pC];	
+		spe4_Data[pC] = particle_Array_PPU[pC];	
+		spe5_Data[pC] = particle_Array_PPU[pC];	
+		spe6_Data[pC] = particle_Array_PPU[pC];	
+
+
+		// update values for shared array (graphics)
+		/*
+		particle_Array_Shared[pC].position[0] = particle_Array_PPU[pC].position[0];
+		particle_Array_Shared[pC].position[1] = particle_Array_PPU[pC].position[1];
+		particle_Array_Shared[pC].position[2] = particle_Array_PPU[pC].position[2];
+		particle_Array_Shared[pC].position[3] = particle_Array_PPU[pC].position[3];
+		*/
+
+		/*		
+		printf("Particle %d positions:   ", pC );
+		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2], particle_Array_PPU[pC].velocity[3]);
+		printf("\n");
+		*/
+
+
+		//fullSimilationData[iterCount].particleArray[pC]= particle_Array_PPU[pC];
+	}
+
+	
+
 
 	struct timeval end;
 	gettimeofday(&end,NULL);

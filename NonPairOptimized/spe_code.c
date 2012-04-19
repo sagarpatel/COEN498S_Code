@@ -79,6 +79,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
   	mfc_read_tag_status_all();
 
 
+
   //	printf("%d\n", &particle_Array_SPU );
 	
 	//printf("after array address\n");
@@ -325,6 +326,12 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
     mfc_read_tag_status_all ();
 
 
+
+
+  	spu_write_out_mbox(123);
+  	printf("Sent out message from: %d\n", (int)envp );
+
+  	while(1);
 
 
   return (0);
