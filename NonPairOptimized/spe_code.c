@@ -32,12 +32,6 @@ Sagar Patel
 #include "common.h"
 
 
-typedef struct 
-{
-	__vector float position;	// includes x,y,z --> 4th vector element will be used to store quadrant id of the particle
-	__vector float velocity;	// || --> 4th element will be used for mass value of the particle
-} 
-particle_Data;
 
 
 volatile particle_Data particle_Array_SPU[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
@@ -84,9 +78,6 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	
 	//printf("after array address\n");
 
-	// temp particle Datas used for calculations, not pointers, purposefully passed by value
-	particle_Data pDi;
-	particle_Data pDj;
 
 
 	//temp vectors used for calculations in loop
@@ -115,56 +106,65 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	__vector float tempUnitVector = {0,0,0,0};
 	__vector float distanceVector = {0,0,0,0};
 
+	
+	particle_Data satData;
+	particle_Data immuneData;
 
+	int spuID = (int)envp;
 
-	//stupid C99, need to declare indicies before for loops
-	int i = 0;
-	int j = 0;
-	int it_counter = 0;
-
-	float massSave;
-
-//	printf("\n^^^^^^^   Now starting main loop of spe : %d \n\n\n", (int)envp);
-
-
-	int startPoint = ((int)envp - 1) * PARTICLES_MAXCOUNT/SPU_COUNT;
-	int endPoint = envp*PARTICLES_MAXCOUNT/SPU_COUNT;
-	// to avoid out of bounds array
-	if (endPoint > PARTICLES_MAXCOUNT)
-		endPoint = PARTICLES_MAXCOUNT;
-
-/*
-	printf("startPoint: %d\n", startPoint );
-	printf("endPoint: %d\n", endPoint );
-	*/
-
-	// this first loop is to calculate the forces/accelerations
-	// NOTE ---> NO FORCES ARE APPLIED IN THIS LOOP, NO POSITIONS WILL BE CHANGED.
-	// The calculated accelerations will be used to increment the particles velocity vector, NOT POSITION
-	for(i = startPoint ; i< endPoint ; ++i)
+	switch(spuID)
 	{
+		case 1:
+			satData.position = sat1Position;
+			satData.velocity = sat1Velocity;
+			break;
 
-		//cache the particle data struct to the temp declared outside the loops
-		pDi = particle_Array_SPU[i];
-		massSave = pDi.velocity[3];
 
-		for(j = 0; j<PARTICLES_MAXCOUNT; ++j)
+		case 2:
+			satData.position = sat2Position;
+			satData.velocity = sat2Velocity;
+			break;
+			
+
+		case 3:
+			satData.position = sat3Position;
+			satData.velocity = sat3Velocity;
+			break;
+			
+
+		case 4:
+			satData.position = sat4Position;
+			satData.velocity = sat4Velocity;
+			break;
+			
+
+		case 5:
+			satData.position = sat5Position;
+			satData.velocity = sat5Velocity;
+			break;
+			
+
+		case 6:
+			satData.position = sat6Position;
+			satData.velocity = sat6Velocity;
+			break;
+
+	}
+    
+
+	tempMassSplat = spu_splats((float)satData.velocity[3]);
+
+	int dmaCounter = 0;
+
+	for(dmaCounter = 0; dmaCounter < DMA_COUNT; dmaCounter++)
+	{
+		int i = 0;
+
+		for(i = 0; i < PARTICLE_DMA_MAX; i++)
 		{
 
-			//for every particle i, calculate for all j's
-			// get resultant total velocity, don't apply it in these loops,
-			// apply velocities for all bodies at the same time, in seperate loop at the end.
 
-			//cache the particle data struct to the temp declared outside the loops
-			pDj = particle_Array_SPU[j];
-			/*
-			if(pDj.velocity[3] < 1000.0f)
-			{
-				printf("Mass of particle: %d is %f \n", j, pDj.velocity[3] );
-			}
-			*/
-
-			tempDistance = spu_sub(pDj.position,pDi.position); //actual distance vector between objects i and j
+			tempDistance = spu_sub(immuneData.position,satData.position); //actual distance vector between objects i and j
 			
 			// save value for unit vector calculation later
 			distanceVector = tempDistance;
@@ -180,9 +180,9 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			//use the distance vector  right now for numerator, before we overwrite is later in the code
 			// use mass of subject mass
 
-			//printf("Mass of particle: %d: %f\n",j, pDj.velocity[3] );
+			//printf("Mass of particle: %d: %f\n",j, immuneData.velocity[3] );
 
-			tempMassSplat = spu_splats((float)pDj.velocity[3]); //mass is stored in the last element (3) of velocity vector
+			tempMassSplat = spu_splats((float)immuneData.velocity[3]); //mass is stored in the last element (3) of velocity vector
 			tempNumerator = spu_madd(tempMassSplat, tempGConstant, zeroVector);
 			
 
@@ -260,7 +260,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 			//Print  accell
 			/*
-			if(pDi.velocity[3] != pDj.velocity[3])
+			if(satData.velocity[3] != immuneData.velocity[3])
 			{
 				printf("Acceleration applied on particle: %d : x= %f, y=%f, z=%f", i, tempAcceleration[0], tempAcceleration[1], tempAcceleration[2]);
 				printf("\n");
@@ -268,10 +268,10 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			*/
 
 			//increment velocity value of particle with a*dt
-			// need to explicitly call the array, since pDi is only a temp pass by value, doesn't change the particle
+			// need to explicitly call the array, since satData is only a temp pass by value, doesn't change the particle
 			particle_Array_SPU[i].velocity = spu_madd(tempAcceleration, tempDELATTIME, particle_Array_SPU[i].velocity);
 			//restore mass in right position, in case
-			particle_Array_SPU[i].velocity[3] = massSave;
+			//particle_Array_SPU[i].velocity[3] = massSave;
 
 			/*
 			//Print velocity
@@ -283,34 +283,40 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			/*
 
 			printf("Particle %d:   ", i );
-			printf("x= %f, y=%f, z=%f", pDi.velocity[0], pDi.velocity[1], pDi.velocity[2]);
+			printf("x= %f, y=%f, z=%f", satData.velocity[0], satData.velocity[1], satData.velocity[2]);
 			printf("\n");
 
 			*/
-			
-			//end of this loop
+
+			//incrementing position with v*dt
+			// spu_madd is awesome, it all gets done in one line! emulated the += operator, kinda, but more flexible
+			particle_Array_SPU[i].position = spu_madd(particle_Array_SPU[i].velocity, tempDELATTIME, particle_Array_SPU[i].position);
+
+			/*
+			printf("Particle %d positions:   ", i );
+			printf("x= %f, y=%f, z=%f", particle_Array_SPU[i].position[0], particle_Array_SPU[i].position[1], particle_Array_SPU[i].position[2]);
+			printf("\n");
+			*/
 		}
-		//printf("\n");
-	}
-
-	//now that all the accelerations for all particles are calculated,
-	//apply them and update velocity 
-	for(i = startPoint; i<endPoint; ++i)
-	{
-		//incrementing position with v*dt
-		// spu_madd is awesome, it all gets done in one line! emulated the += operator, kinda, but more flexible
-		particle_Array_SPU[i].position = spu_madd(particle_Array_SPU[i].velocity, tempDELATTIME, particle_Array_SPU[i].position);
-
-		/*
-		printf("Particle %d positions:   ", i );
-		printf("x= %f, y=%f, z=%f", particle_Array_SPU[i].position[0], particle_Array_SPU[i].position[1], particle_Array_SPU[i].position[2]);
-		printf("\n");
-		*/
-	
-
-	}
 
 
+
+				//send back data
+		mfc_put (&particle_Array_SPU, pdata, sizeof(particle_Array_SPU),tag_id, 0, 0);
+
+	    // wait for the DMA put to complete 
+	    mfc_write_tag_mask (1 << tag_id);
+	    mfc_read_tag_status_all ();
+
+
+
+
+	  	spu_write_out_mbox(123);
+	  	printf("Sent out message from: %d\n", (int)envp );
+
+
+
+  }
 
 /*
 	printf("\n");
@@ -318,22 +324,6 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	printf("///////////////////\n\n");
 
 */
-	//send back data
-	mfc_put (&particle_Array_SPU, pdata, sizeof(particle_Array_SPU),tag_id, 0, 0);
-
-    // wait for the DMA put to complete 
-    mfc_write_tag_mask (1 << tag_id);
-    mfc_read_tag_status_all ();
-
-
-
-
-  	spu_write_out_mbox(123);
-  	printf("Sent out message from: %d\n", (int)envp );
-
-  	while(1);
-
-
   return (0);
 }
 

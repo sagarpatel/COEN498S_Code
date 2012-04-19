@@ -58,13 +58,6 @@ unsigned int entry = SPE_DEFAULT_ENTRY;
 spe_stop_info_t stop_info;
 
 
-typedef struct 
-{
-	__vector float position;	// includes x,y,z --> 4th vector element will be used to store quadrant id of the particle
-	__vector float velocity;	// || --> 4th element will be used for mass value of the particle
-} 
-particle_Data;
-
 // one iteration, used for calculations
 particle_Data particle_Array_PPU[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
 
@@ -95,7 +88,6 @@ particle_Data spe6_Data[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(partic
 
 particle_Data tempParticleArray[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
 
-particle_Data_Shared particle_Array_Shared[PARTICLES_MAXCOUNT];
 
 __vector float zeroVector = {0,0,0,0};
 __vector unsigned int oneVector = {1,1,1,1};
@@ -110,45 +102,6 @@ __vector float initialVelocityVector_Y = {0, 0.05f, 0, PARTICLES_DEFAULTMASS};
 __vector float initialVelocityVector_Y_minus = {0, -0.05f, 0, PARTICLES_DEFAULTMASS};
 
 // mass scale down is ^-5
-
-float earthMass = 59736000000000000000.0f; // 5.9736 * pow(10,19);  // scaled for scaled G value  // original = 5.9736 * 10^24
-
-
-__vector float issPosition = {6721000,0,0,0};  //350000 m is high, need to add radius of earth 6371000 // addition is 6761000
-__vector float issVelocity = {0,7707,0,0};
-float issMass = 4.5; // original = 4.5 * 10^5
-
-__vector float hubblePosition = {6930000,0, 0, 0}; //559000m high, need to add earth radius
-__vector float hubbleVelocity = {0, 7500, 0,0};
-float hubbleMass = 0.11110f ; // original is 11110 kg
-
-
-float satMass = 0.11110f ; // original is 11110 kg
-
-__vector float sat1Position = {6930000,0, 0, 0}; //559000m high, need to add earth radius
-__vector float sat1Velocity = {0, 7500, 0,0};
-
-
-__vector float sat2Position = {-6930000,0, 0, 0}; //559000m high, need to add earth radius
-__vector float sat2Velocity = {0, -7500, 0,0};
-
-
-__vector float sat3Position = {0,6930000, 0, 0}; //559000m high, need to add earth radius
-__vector float sat3Velocity = {-7500, 0, 0,0};
-
-
-__vector float sat4Position = {0,-6930000, 0, 0}; //559000m high, need to add earth radius
-__vector float sat4Velocity = {7500, 0, 0,0};
-
-
-/* Moon data, from: http://ssd.jpl.nasa.gov/horizons.cgi#results
- X = 1.142141171615604E+05 Y =-3.591656526588580E+05 Z = 2.279788111025651E+04
- VX= 1.002213369349858E+00 VY= 2.572033783875429E-01 VZ= 7.321967853480284E-02
- */
-
-__vector float moonPosition = {114214117, -359165652, 22797881, 0};
-__vector float moonVelocity = {1002, 257, 73};
-float moonMass = 734900000000000000.0f; // original mass 7.349 * 10^22 
 
 
 
@@ -387,59 +340,7 @@ int main(int argc, char **argv)
 			printf("Earth mass: %f\n", earthMass );
 			particle_Array_PPU[pC].velocity[3] = earthMass; // PARTICLES_DEFAULTMASS * 500.0f;
 		}
-		if(pC == 1)
-		{
-			particle_Array_PPU[pC].position = issPosition; //initPositionVector;
-			particle_Array_PPU[pC].velocity = issVelocity; //initialVelocityVector_Y;
 
-			particle_Array_PPU[pC].velocity[3] = issMass; //PARTICLES_DEFAULTMASS * 500.0f;
-
-		}
-		if(pC == 2)
-		{
-			particle_Array_PPU[pC].position = sat1Position; //initPositionVector;
-			particle_Array_PPU[pC].velocity = sat1Velocity; //initialVelocityVector_Y;
-
-
-			particle_Array_PPU[pC].velocity[3] = satMass; 
-
-		}
-		if(pC == 3)
-		{
-			particle_Array_PPU[pC].position = sat2Position; //initPositionVector;
-			particle_Array_PPU[pC].velocity = sat2Velocity; //initialVelocityVector_Y;
-
-
-			particle_Array_PPU[pC].velocity[3] = satMass; 
-
-		}
-		if(pC == 4)
-		{
-			particle_Array_PPU[pC].position = sat3Position; //initPositionVector;
-			particle_Array_PPU[pC].velocity = sat3Velocity; //initialVelocityVector_Y;
-
-
-			particle_Array_PPU[pC].velocity[3] = satMass; 
-
-		}
-		if(pC == 5)
-		{
-			particle_Array_PPU[pC].position = sat4Position; //initPositionVector;
-			particle_Array_PPU[pC].velocity = sat4Velocity; //initialVelocityVector_Y;
-
-
-			particle_Array_PPU[pC].velocity[3] = satMass; 
-
-		}
-		if(pC == 6)
-		{
-			particle_Array_PPU[pC].position = moonPosition; //initPositionVector;
-			particle_Array_PPU[pC].velocity = moonVelocity; //initialVelocityVector_Y;
-
-
-			particle_Array_PPU[pC].velocity[3] = moonMass; 
-
-		}
 		else
 		{
 
@@ -736,13 +637,7 @@ int main(int argc, char **argv)
 		spe6_Data[pC] = particle_Array_PPU[pC];	
 
 
-		// update values for shared array (graphics)
-		/*
-		particle_Array_Shared[pC].position[0] = particle_Array_PPU[pC].position[0];
-		particle_Array_Shared[pC].position[1] = particle_Array_PPU[pC].position[1];
-		particle_Array_Shared[pC].position[2] = particle_Array_PPU[pC].position[2];
-		particle_Array_Shared[pC].position[3] = particle_Array_PPU[pC].position[3];
-		*/
+
 
 		/*		
 		printf("Particle %d positions:   ", pC );
