@@ -34,7 +34,7 @@ Sagar Patel
 
 
 
-volatile particle_Data particle_Array_SPU[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
+volatile __vector float position_Array_SPU[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
 
 
 int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long envp)
@@ -58,11 +58,11 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
   }
 
   	/*
-  	printf("particle_Array_SPU value %d \n", particle_Array_SPU);
-  	printf("&particle_Array_SPU value %d \n", &particle_Array_SPU);
+  	printf("position_Array_SPU value %d \n", position_Array_SPU);
+  	printf("&position_Array_SPU value %d \n", &position_Array_SPU);
 	*/
 /*
-  	mfc_get(&particle_Array_SPU, pdata, sizeof(particle_Array_SPU),tag_id, 0, 0);
+  	mfc_get(&position_Array_SPU, pdata, sizeof(position_Array_SPU),tag_id, 0, 0);
   	
 
   	//printf("after mfc_get\n");
@@ -74,7 +74,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 */
 
 
-  //	printf("%d\n", &particle_Array_SPU );
+  //	printf("%d\n", &position_Array_SPU );
 	
 	//printf("after array address\n");
 
@@ -283,9 +283,9 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			*/
 			//increment velocity value of particle with a*dt
 			// need to explicitly call the array, since satData is only a temp pass by value, doesn't change the particle
-			//particle_Array_SPU[i].velocity = spu_madd(tempAcceleration, tempDELATTIME, particle_Array_SPU[i].velocity);
+			//position_Array_SPU[i].velocity = spu_madd(tempAcceleration, tempDELATTIME, position_Array_SPU[i].velocity);
 			//restore mass in right position, in case
-			//particle_Array_SPU[i].velocity[3] = massSave;
+			//position_Array_SPU[i].velocity[3] = massSave;
 
 
 			satData.velocity = spu_madd(tempAcceleration, tempDELATTIME, satData.velocity);
@@ -295,7 +295,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			/*
 			//Print velocity
 			printf("Velocity %d:   ", i );
-			printf("x= %f, y=%f, z=%f", particle_Array_SPU[i].velocity[0], particle_Array_SPU[i].velocity[1], particle_Array_SPU[i].velocity[2]);
+			printf("x= %f, y=%f, z=%f", position_Array_SPU[i].velocity[0], position_Array_SPU[i].velocity[1], position_Array_SPU[i].velocity[2]);
 			printf("\n");
 			*/
 
@@ -309,15 +309,15 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 			//incrementing position with v*dt
 			// spu_madd is awesome, it all gets done in one line! emulated the += operator, kinda, but more flexible
-			//particle_Array_SPU[i].position = spu_madd(particle_Array_SPU[i].velocity, tempDELATTIME, particle_Array_SPU[i].position);
+			//position_Array_SPU[i].position = spu_madd(position_Array_SPU[i].velocity, tempDELATTIME, position_Array_SPU[i].position);
 			satData.position = spu_madd(satData.velocity, tempDELATTIME, satData.position);
 
 			
-			particle_Array_SPU[i].position = satData.position;
+			position_Array_SPU[i] = satData.position;
 
 			/*
 			printf("Particle %d positions:   ", i );
-			printf("x= %f, y=%f, z=%f", particle_Array_SPU[i].position[0], particle_Array_SPU[i].position[1], particle_Array_SPU[i].position[2]);
+			printf("x= %f, y=%f, z=%f", position_Array_SPU[i].position[0], position_Array_SPU[i].position[1], position_Array_SPU[i].position[2]);
 			printf("\n");
 			*/
 
@@ -326,7 +326,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 
 				//send back data
-		mfc_put (&particle_Array_SPU, pdata, sizeof(particle_Array_SPU),tag_id, 0, 0);
+		mfc_put (&position_Array_SPU, pdata, sizeof(position_Array_SPU),tag_id, 0, 0);
 
 	    // wait for the DMA put to complete 
 	    mfc_write_tag_mask (1 << tag_id);

@@ -85,7 +85,7 @@ particle_Data spe6_Data[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle
 */
 typedef struct 
 {
-	particle_Data positionArray[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
+	__vector float positionArray[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
 
 }
 singleSPEData;
@@ -414,7 +414,7 @@ int main(int argc, char **argv)
 	unsigned int speMsgArray[6];
 	int speCounter = 0;	
 
-	while( (speMsgArray[0] != KILLOPCODE) && (speMsgArray[1] != KILLOPCODE) && (speMsgArray[2] != KILLOPCODE) && (speMsgArray[3] != KILLOPCODE) && (speMsgArray[4] != KILLOPCODE) && (speMsgArray[5] != KILLOPCODE) )
+	while( (speMsgArray[0] != KILLOPCODE) || (speMsgArray[1] != KILLOPCODE) || (speMsgArray[2] != KILLOPCODE) || (speMsgArray[3] != KILLOPCODE) || (speMsgArray[4] != KILLOPCODE) || (speMsgArray[5] != KILLOPCODE) )
 	{
 
 		//printf("In main while\n");
@@ -451,7 +451,7 @@ int main(int argc, char **argv)
 					// speCounter should be partcle id
 		//			printf("Inside transcription loop: %d\n", arrayCounter);
 					// +1 is to keep ifrs empty --> immune body
-					fullSimilationData[arrayCounter].particleArray[speCounter+1] = fullSPEData[speCounter].positionArray[arrayCounter]; // copy iterations of single body
+					fullSimilationData[arrayCounter].particleArray[speCounter+1].position = fullSPEData[speCounter].positionArray[arrayCounter]; // copy iterations of single body
 					//printf("From SPE:%d Body %d --> x:%f\ty:%f\tz:%f\n", speCounter, arrayCounter, fullSPEData[speCounter].positionArray[arrayCounter].position[0], fullSPEData[speCounter].positionArray[arrayCounter].position[1], fullSPEData[speCounter].positionArray[arrayCounter].position[2] );
 
 				}

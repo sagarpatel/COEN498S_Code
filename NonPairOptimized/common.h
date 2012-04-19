@@ -38,7 +38,7 @@ Sagar Patel
 #define ITERATION_COUNT 14000//8640  //has to be >= PARTICLE_DMA_MAX
 
 
-#define PARTICLE_DMA_MAX 512
+#define PARTICLE_DMA_MAX 1024
 
 #define DMA_COUNT ITERATION_COUNT/PARTICLE_DMA_MAX
 // 86400 seconds in 24 hours
