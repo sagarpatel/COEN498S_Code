@@ -45,6 +45,7 @@ Sagar Patel
 #include <sys/time.h>
 
 
+
 //pointer to spe code
 extern spe_program_handle_t spe_code;
 
@@ -71,22 +72,25 @@ typedef struct
 iterationData;
 
 // MEGA ARRAY OF ALL DATA, entire simulation
-iterationData fullSimilationData[ITERATION_COUNT];
+iterationData fullSimilationData[fullDataCount];
 
-int fullDataCounter = 0;
+/*
+// data for individual spu
+particle_Data spe1_Data[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
+particle_Data spe2_Data[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
+particle_Data spe3_Data[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
+particle_Data spe4_Data[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
+particle_Data spe5_Data[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
+particle_Data spe6_Data[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
+*/
+typedef struct 
+{
+	particle_Data positionArray[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
 
+}
+singleSPEData;
 
-
-/// subdivisions of arrays for each spe
-particle_Data spe1_Data[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
-particle_Data spe2_Data[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
-particle_Data spe3_Data[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
-particle_Data spe4_Data[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
-particle_Data spe5_Data[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
-particle_Data spe6_Data[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
-
-
-particle_Data tempParticleArray[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
+singleSPEData fullSPEData[6];
 
 
 __vector float zeroVector = {0,0,0,0};
@@ -151,7 +155,7 @@ void *spe_code_launch_1(void *data)
 	/* Run the SPE program until completion */
 	do 
 	{	
-		retval = spe_context_run(my_context, &entry_point, 0, spe1_Data, 1, NULL);
+		retval = spe_context_run(my_context, &entry_point, 0, fullSPEData[0].positionArray, 1, NULL);
 		contextReadySPE1 = 1;
 	} 
 	while (retval > 0); /* Run until exit or error */
@@ -179,7 +183,7 @@ void *spe_code_launch_2(void *data)
 	/* Run the SPE program until completion */
 	do 
 	{	
-		retval = spe_context_run(my_context, &entry_point, 0, spe2_Data, 2, NULL);
+		retval = spe_context_run(my_context, &entry_point, 0, fullSPEData[1].positionArray, 2, NULL);
 	} 
 	while (retval > 0); /* Run until exit or error */
 	spe_context_destroy(my_context);	
@@ -206,7 +210,7 @@ void *spe_code_launch_3(void *data)
 	/* Run the SPE program until completion */
 	do 
 	{	
-		retval = spe_context_run(my_context, &entry_point, 0, spe3_Data, 3, NULL);
+		retval = spe_context_run(my_context, &entry_point, 0, fullSPEData[2].positionArray, 3, NULL);
 		contextReadySPE3 = 1;
 	} 
 	while (retval > 0); /* Run until exit or error */
@@ -234,7 +238,7 @@ void *spe_code_launch_4(void *data)
 	/* Run the SPE program until completion */
 	do 
 	{	
-		retval = spe_context_run(my_context, &entry_point, 0, spe4_Data, 4, NULL);
+		retval = spe_context_run(my_context, &entry_point, 0, fullSPEData[3].positionArray, 4, NULL);
 		contextReadySPE4 = 1;
 	} 
 	while (retval > 0); /* Run until exit or error */
@@ -262,7 +266,7 @@ void *spe_code_launch_5(void *data)
 	/* Run the SPE program until completion */
 	do 
 	{	
-		retval = spe_context_run(my_context, &entry_point, 0, spe5_Data, 5, NULL);
+		retval = spe_context_run(my_context, &entry_point, 0, fullSPEData[4].positionArray, 5, NULL);
 		contextReadySPE5 = 1;
 	} 
 	while (retval > 0); /* Run until exit or error */
@@ -290,7 +294,7 @@ void *spe_code_launch_6(void *data)
 	/* Run the SPE program until completion */
 	do 
 	{	
-		retval = spe_context_run(my_context, &entry_point, 0, spe6_Data, 6, NULL);
+		retval = spe_context_run(my_context, &entry_point, 0, fullSPEData[5].positionArray, 6, NULL);
 		contextReadySPE6 = 1;
 	} 
 	while (retval > 0); /* Run until exit or error */
@@ -309,122 +313,12 @@ int main(int argc, char **argv)
 
 	time_t startTime = time(NULL);
 
-	//seed random generator
-	srand( time(NULL) );
-
-	printf("\n\n\n~~~~~~~~Printing out particles and their randomly assigned positions: \n\n");
-
-	int pC = 0;
-	for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
-	{
-		int grideSize = GRID_SIZE;
-
-	//	printf("\n grideSize/2: %d", grideSize/2);
-
-		float xPos = (float)( rand() % grideSize  - grideSize/2);
-		float yPos = (float)( rand() % grideSize  - grideSize/2);
-		float zPos = (float)( rand() % grideSize  - grideSize/2);
-
-		particle_Array_PPU[pC].position[0] = xPos;
-		particle_Array_PPU[pC].position[1] = yPos;
-		particle_Array_PPU[pC].position[2] = zPos;
-
-		particle_Array_PPU[pC].velocity[3] = PARTICLES_DEFAULTMASS;
-
-		if(pC == 0)
-		{
-			// center, high mass
-			particle_Array_PPU[pC].position = zeroVector;
-			particle_Array_PPU[pC].velocity = zeroVector; //initialVelocityVector_Y_minus;
-
-			printf("Earth mass: %f\n", earthMass );
-			particle_Array_PPU[pC].velocity[3] = earthMass; // PARTICLES_DEFAULTMASS * 500.0f;
-		}
-
-		else
-		{
 
 
 
-		}
 
-		//particle_Array_PPU[pC].position = vec_splat(particle_Array_PPU[pC].position, 1);
-		//particle_Array_PPU[pC].position = vec_splats((float)GRAVITATIONALCONSTANT); --> use splats, seems faster
-		
-		printf("Particle %d:   ", pC );
-		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2], particle_Array_PPU[pC].velocity[3]);
-		printf("\n");
-		
-	}
-
-
-	// copy arrays into spe ones
-	pC = 0;
-	for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
-	{
-
-		spe1_Data[pC] = particle_Array_PPU[pC];	
-		spe2_Data[pC] = particle_Array_PPU[pC];	
-		spe3_Data[pC] = particle_Array_PPU[pC];	
-		spe4_Data[pC] = particle_Array_PPU[pC];	
-		spe5_Data[pC] = particle_Array_PPU[pC];	
-		spe6_Data[pC] = particle_Array_PPU[pC];		
-	}
-
-	for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
-	{
-     /////// INSERT QUADRANT CODE HERE , actually octant --> 8 equal sub cubes 
-		
-		// compare with zero vector to get on which side of each axis the particle is
-		// 0 is negative, 1 is positive side of the axis
-		__vector bool int axisDirection = vec_cmpgt(particle_Array_PPU[i].position, zeroVector);
-
-
-
-		// need to manually set, can't cast due to size difference error
-		__vector unsigned int shiftedAxis = { (unsigned int)axisDirection[0],
-											  (unsigned int)axisDirection[1],
-											  (unsigned int)axisDirection[2],
-												0};
-		// need to do this to revert 1s into NON 2s complement form --> vec_cmgt doc LIES
-		shiftedAxis = vec_andc(oneVector, shiftedAxis);
-
-		/*
-		printf("Particle %d axis sign:   ", i );
-		printf("x= %x, y=%x, z=%x", shiftedAxis[0], shiftedAxis[1], shiftedAxis[2]);
-		printf("\n");
-		*/
-
-		// shift 3 axies simultaneously (actually only 2, 1 stays in origina positon
-		//, with intent to OR them later
-		shiftedAxis = vec_sl(shiftedAxis, axisBitShiftMask); // will also use as x vector
-
-		__vector unsigned int axis_Y = vec_splats(shiftedAxis[1]);
-		__vector unsigned int axis_Z = vec_splats(shiftedAxis[2]);
-		// merge shhifted x y z values by OR-ing
-		// this gives the octant id, range from 0-7 (000 to 111 in binary)
-		shiftedAxis = vec_or(shiftedAxis, axis_Y);
-		shiftedAxis = vec_or(shiftedAxis, axis_Z);
-		// insert octant value into last slot of position vector of particle
-		particle_Array_PPU[i].position[3] = (float)shiftedAxis[0];
-
-		//printf("Oct ID: %d \n", shiftedAxis[0]);
-
-		/////// Update octant vector by incrementing octant that the particle is in
-		// The only possible non SIMD line in the entire program, 
-		//irreleant since quadrant counting should occur on PPU anyways
-		octantCount[shiftedAxis[0]] ++ ;
-		
-	}
 	i=0;
 
-	printf("\n");
-
-		printf("Particle disttribution across the octants: \n");
-		printf("O0: %d    O1: %d    O2: %d    O3: %d    O4: %d    O5: %d    O6: %d    O7: %d\n",
-				octantCount[0], octantCount[1], octantCount[2], octantCount[3], 
-				octantCount[4],	octantCount[5], octantCount[6], octantCount[7]);
-		printf("\n");
 
 
 	int speCount = spe_cpu_info_get(SPE_COUNT_PHYSICAL_SPES,-1);
@@ -515,215 +409,57 @@ int main(int argc, char **argv)
 
 
 
-	unsigned int test  = 0;
-	printf("&test: %x\n", &test );
-	unsigned int *testPtr = &test;
+	unsigned int speMsgArray[6];
+	int speCounter = 0;	
 
-	while(test == 0)
+	while( (speMsgArray[0] != KILLOPCODE) && (speMsgArray[1] != KILLOPCODE) && (speMsgArray[2] != KILLOPCODE) && (speMsgArray[3] != KILLOPCODE) && (speMsgArray[4] != KILLOPCODE) && (speMsgArray[5] != KILLOPCODE) )
 	{
 		
 		// from http://www.ibm.com/developerworks/power/library/pa-tacklecell2/index.html
-		printf("contexttextPointerSPE1: %x\n", contextPointerSPE1 );
-		printf("contexttextPointerSPE2: %x\n", contextPointerSPE2 );
-		printf("contexttextPointerSPE3: %x\n", contextPointerSPE3 );
-		printf("contexttextPointerSPE4: %x\n", contextPointerSPE4 );
-		printf("contexttextPointerSPE5: %x\n", contextPointerSPE5 );
-		printf("contexttextPointerSPE6: %x\n", contextPointerSPE6 );
+		spe_out_mbox_read(contextPointerSPE1, &speMsgArray[0], 1);
+		spe_out_mbox_read(contextPointerSPE2, &speMsgArray[1], 1);
+		spe_out_mbox_read(contextPointerSPE3, &speMsgArray[2], 1);
+		spe_out_mbox_read(contextPointerSPE4, &speMsgArray[3], 1);
+		spe_out_mbox_read(contextPointerSPE5, &speMsgArray[4], 1);
+		spe_out_mbox_read(contextPointerSPE6, &speMsgArray[5], 1);
 
 
-		printf("&test: %x\n", &test );
-		printf("testPtr: %x\n", testPtr );
-		spe_out_mbox_read(contextPointerSPE1, testPtr, 1);//, SPE_MBOX_ALL_BLOCKING );
-		printf("After 1\n");
-/*
-		spe_out_mbox_read(contextPointerSPE2, &test, 1);
-		printf("After 2\n");
+		for(speCounter = 0; speCounter < SPU_COUNT ; speCounter++ )
+		{
+			unsigned int opCode = speMsgArray[speCounter];
 
-		spe_out_mbox_read(contextPointerSPE3, &test, 1);
-		printf("After 3\n");
+			if( (opCode != 0) || (opCode != KILLOPCODE) )
+			{
 
-		spe_out_mbox_read(contextPointerSPE4, &test, 1);
-		printf("After 4\n");
+				int arrayCounter = 0;
+				int startIndex = (int)opCode * PARTICLE_DMA_MAX;
+				int stopIndex = ((int)opCode * PARTICLE_DMA_MAX) + PARTICLE_DMA_MAX;
+				for(arrayCounter = startIndex; arrayCounter < stopIndex; arrayCounter ++)
+				{
+					// array counter should represent iteration index
+					// speCounter should be partcle id
+					fullSimilationData[arrayCounter].particleArray[speCounter] = fullSPEData[speCounter].positionArray[arrayCounter]; // copy iterations of single body
 
-		spe_out_mbox_read(contextPointerSPE5, &test, 1);
-		printf("After 5\n");
 
-		spe_out_mbox_read(contextPointerSPE6, &test, 1);
-		printf("After 6\n");
-		
-*/
+				}
 
-		printf("Test: %d\n", test );
+
+			}
+			
+
+		}
+
 
 
 	}
 	//test = 0;
 
 
-	printf("Out of while msg\n");
 
-/*
-	//Wait for Thread Completion
-	retval = pthread_join(spe1_Thread, NULL);
-
-
-	retval = pthread_join(spe2_Thread, NULL);
-
-	
-	retval = pthread_join(spe3_Thread, NULL);
-
-	retval = pthread_join(spe4_Thread, NULL);
-	
-	retval = pthread_join(spe5_Thread, NULL);
-	
-	retval = pthread_join(spe6_Thread, NULL);
-	*/
-
-	printf("After thread join\n");
-
-		
-	speNumber = 1;
-	
-	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
-	{
-		particle_Array_PPU[i] = spe1_Data[i];
-	}
-
-	speNumber = 2;
-	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
-	{
-		particle_Array_PPU[i] = spe2_Data[i];
-	}
-
-	speNumber = 3;
-	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
-	{
-		particle_Array_PPU[i] = spe3_Data[i];
-	}
-
-	speNumber = 4;
-	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
-	{
-		particle_Array_PPU[i] = spe4_Data[i];
-	}
-
-	speNumber = 5;
-	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<speNumber*PARTICLES_MAXCOUNT/SPU_COUNT; ++i)
-	{
-		particle_Array_PPU[i] = spe5_Data[i];
-	}
-
-	speNumber = 6;
-	for(i=(speNumber-1)*PARTICLES_MAXCOUNT/SPU_COUNT; i<PARTICLES_MAXCOUNT; ++i)
-	{
-		particle_Array_PPU[i] = spe6_Data[i];
-	}
 
 	// reset spe counter
 	speNumber = 0;
 	
-
-
-	// copy arrays into spe ones
-	pC = 0;
-	for(pC = 0; pC < PARTICLES_MAXCOUNT; ++pC)
-	{
-
-		spe1_Data[pC] = particle_Array_PPU[pC];	
-		spe2_Data[pC] = particle_Array_PPU[pC];	
-		spe3_Data[pC] = particle_Array_PPU[pC];	
-		spe4_Data[pC] = particle_Array_PPU[pC];	
-		spe5_Data[pC] = particle_Array_PPU[pC];	
-		spe6_Data[pC] = particle_Array_PPU[pC];	
-
-
-
-
-		/*		
-		printf("Particle %d positions:   ", pC );
-		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[pC].position[0], particle_Array_PPU[pC].position[1], particle_Array_PPU[pC].position[2], particle_Array_PPU[pC].velocity[3]);
-		printf("\n");
-		*/
-
-
-		//fullSimilationData[iterCount].particleArray[pC]= particle_Array_PPU[pC];
-	}
-
-	
-
-
-	struct timeval end;
-	gettimeofday(&end,NULL);
-	float deltaTime = ((end.tv_sec - start.tv_sec)*1000.0f + (end.tv_usec -start.tv_usec)/1000.0f);
-
-
-	printf("print out values from post spe calculations\n");
-	i = 0;
-	for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
-	{
-
-		printf("Particle %d positions:   ", i );
-		printf("x= %f, y=%f, z=%f , mass:%f", particle_Array_PPU[i].position[0], particle_Array_PPU[i].position[1], particle_Array_PPU[i].position[2], particle_Array_PPU[i].velocity[3]);
-		printf("\n");
-	
-	}
-	//cleaining the array
-	octantCount = resetOctantCount;
-	for(i = 0; i<PARTICLES_MAXCOUNT; ++i)
-	{
-     /////// INSERT QUADRANT CODE HERE , actually octant --> 8 equal sub cubes 
-		
-		// compare with zero vector to get on which side of each axis the particle is
-		// 0 is negative, 1 is positive side of the axis
-		__vector bool int axisDirection = vec_cmpgt(particle_Array_PPU[i].position, zeroVector);
-
-
-
-		// need to manually set, can't cast due to size difference error
-		__vector unsigned int shiftedAxis = { (unsigned int)axisDirection[0],
-											  (unsigned int)axisDirection[1],
-											  (unsigned int)axisDirection[2],
-												0};
-		// need to do this to revert 1s into NON 2s complement form --> vec_cmgt doc LIES
-		shiftedAxis = vec_andc(oneVector, shiftedAxis);
-
-		/*
-		printf("Particle %d axis sign:   ", i );
-		printf("x= %x, y=%x, z=%x", shiftedAxis[0], shiftedAxis[1], shiftedAxis[2]);
-		printf("\n");
-		*/
-
-		// shift 3 axies simultaneously (actually only 2, 1 stays in origina positon
-		//, with intent to OR them later
-		shiftedAxis = vec_sl(shiftedAxis, axisBitShiftMask); // will also use as x vector
-
-		__vector unsigned int axis_Y = vec_splats(shiftedAxis[1]);
-		__vector unsigned int axis_Z = vec_splats(shiftedAxis[2]);
-		// merge shhifted x y z values by OR-ing
-		// this gives the octant id, range from 0-7 (000 to 111 in binary)
-		shiftedAxis = vec_or(shiftedAxis, axis_Y);
-		shiftedAxis = vec_or(shiftedAxis, axis_Z);
-		// insert octant value into last slot of position vector of particle
-		particle_Array_PPU[i].position[3] = (float)shiftedAxis[0];
-
-		//printf("Oct ID: %d \n", shiftedAxis[0]);
-
-		/////// Update octant vector by incrementing octant that the particle is in
-		// The only possible non SIMD line in the entire program, 
-		//irreleant since quadrant counting should occur on PPU anyways
-		octantCount[shiftedAxis[0]] ++ ;
-		
-	}
-	i=0;
-
-	printf("\n");
-
-		printf("Particle disttribution across the octants: \n");
-		printf("O0: %d    O1: %d    O2: %d    O3: %d    O4: %d    O5: %d    O6: %d    O7: %d\n",
-				octantCount[0], octantCount[1], octantCount[2], octantCount[3], 
-				octantCount[4],	octantCount[5], octantCount[6], octantCount[7]);
-		printf("\n");
-
 
 
 /*
@@ -732,6 +468,11 @@ int main(int argc, char **argv)
 */
 
 	// need to look into http://www.xmlsoft.org/
+
+
+	struct timeval end;
+	gettimeofday(&end,NULL);
+	float deltaTime = ((end.tv_sec - start.tv_sec)*1000.0f + (end.tv_usec -start.tv_usec)/1000.0f);
 
 
 	printf("Execution time:    %f\n",deltaTime);
@@ -743,6 +484,7 @@ int main(int argc, char **argv)
 	
 
 	iterCount = 0;
+	int pC = 0;
 	for (iterCount = 0; iterCount< ITERATION_COUNT; iterCount++)
 	{
 		//printf("Iteration: %d\n", iterCount);

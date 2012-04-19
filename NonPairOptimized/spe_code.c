@@ -61,7 +61,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
   	printf("particle_Array_SPU value %d \n", particle_Array_SPU);
   	printf("&particle_Array_SPU value %d \n", &particle_Array_SPU);
 	*/
-
+/*
   	mfc_get(&particle_Array_SPU, pdata, sizeof(particle_Array_SPU),tag_id, 0, 0);
   	
 
@@ -71,7 +71,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
   	//wait for DMA and gurantee completion
   	mfc_read_tag_status_all();
-
+*/
 
 
   //	printf("%d\n", &particle_Array_SPU );
@@ -311,8 +311,8 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 
 
-	  	spu_write_out_mbox(123);
-	  	printf("Sent out message from: %d\n", (int)envp );
+	  	spu_write_out_mbox(dmaCounter);
+	  //	printf("Sent out message from: %d\n", (int)envp );
 
 
 
@@ -324,6 +324,9 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	printf("///////////////////\n\n");
 
 */
+
+  spu_write_out_mbox(KILLOPCODE);
+  
   return (0);
 }
 

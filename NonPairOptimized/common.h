@@ -35,14 +35,20 @@ Sagar Patel
 #define GRID_SIZE 100 // grid is a +- GRID_SIZE/2 cube
 #define EPS 0.001 // EPS^2 constant to avoid singularities
 
-#define PARTICLE_DMA_MAX 512
 #define ITERATION_COUNT 512//8640  //has to be >= PARTICLE_DMA_MAX
+
+
+#define PARTICLE_DMA_MAX 512
 
 #define DMA_COUNT ITERATION_COUNT/PARTICLE_DMA_MAX
 // 86400 seconds in 24 hours
 
+#define fullDataCount DMA_COUNT * PARTICLE_DMA_MAX //actual array size
+
+
 #define SPU_COUNT 6 // numbers of spus that will be used
 
+#define KILLOPCODE 777
 
 
 #define earthMass 59736000000000000000.0f // 5.9736 * pow(10,19);  // scaled for scaled G value  // original = 5.9736 * 10^24
