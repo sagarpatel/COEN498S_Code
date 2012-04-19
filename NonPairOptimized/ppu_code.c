@@ -311,6 +311,8 @@ int main(int argc, char **argv)
 // this is done in scalar fashion, NOT SIMD
 // insignificant to performance since it's only done once
 
+	printf("DMA Count %d\n", DMA_COUNT );
+
 	time_t startTime = time(NULL);
 
 
@@ -414,6 +416,8 @@ int main(int argc, char **argv)
 
 	while( (speMsgArray[0] != KILLOPCODE) && (speMsgArray[1] != KILLOPCODE) && (speMsgArray[2] != KILLOPCODE) && (speMsgArray[3] != KILLOPCODE) && (speMsgArray[4] != KILLOPCODE) && (speMsgArray[5] != KILLOPCODE) )
 	{
+
+		printf("In main while\n");
 		
 		// from http://www.ibm.com/developerworks/power/library/pa-tacklecell2/index.html
 		spe_out_mbox_read(contextPointerSPE1, &speMsgArray[0], 1);
@@ -423,26 +427,34 @@ int main(int argc, char **argv)
 		spe_out_mbox_read(contextPointerSPE5, &speMsgArray[4], 1);
 		spe_out_mbox_read(contextPointerSPE6, &speMsgArray[5], 1);
 
+		printf("After all reads\n");
 
 		for(speCounter = 0; speCounter < SPU_COUNT ; speCounter++ )
 		{
-			unsigned int opCode = speMsgArray[speCounter];
+			int opCode = (int)speMsgArray[speCounter];
 
-			if( (opCode != 0) || (opCode != KILLOPCODE) )
+			printf("OPCODE %d\n", opCode );
+
+			if( (opCode != 0) && (opCode != KILLOPCODE) )
 			{
 
 				int arrayCounter = 0;
 				int startIndex = (int)opCode * PARTICLE_DMA_MAX;
 				int stopIndex = ((int)opCode * PARTICLE_DMA_MAX) + PARTICLE_DMA_MAX;
+
+				printf("opCode: %d\t startIndex: %d\n", opCode, startIndex);
+
+				printf("Before entering transcription loop\n");
 				for(arrayCounter = startIndex; arrayCounter < stopIndex; arrayCounter ++)
 				{
 					// array counter should represent iteration index
 					// speCounter should be partcle id
+					printf("Inside transcription loop: %d\n", arrayCounter);
 					fullSimilationData[arrayCounter].particleArray[speCounter] = fullSPEData[speCounter].positionArray[arrayCounter]; // copy iterations of single body
 
 
 				}
-
+				printf("After transcription loop\n");
 
 			}
 			

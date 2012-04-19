@@ -318,14 +318,17 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
   }
 
-/*
+
 	printf("\n");
 	printf("End of SPU #%d\n", (int)envp);
 	printf("///////////////////\n\n");
 
-*/
+
 
   spu_write_out_mbox(KILLOPCODE);
+
+  unsigned int killSig = spu_read_in_mbox();
+  printf("killSig: %d\n", killSig );
   
   return (0);
 }
