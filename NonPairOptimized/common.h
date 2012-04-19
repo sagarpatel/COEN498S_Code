@@ -31,11 +31,11 @@ Sagar Patel
 #define CENTRALBODIES_COUNT 1
 #define PARTICLES_DEFAULTMASS 10.0 // 1.0 is 1 kg
 #define GRAVITATIONALCONSTANT   0.000006673 //0.00000000006673 real value is 6.673 * 10^-11
-#define DELTA_TIME 300
+#define DELTA_TIME 10
 #define GRID_SIZE 100 // grid is a +- GRID_SIZE/2 cube
 #define EPS 0.001 // EPS^2 constant to avoid singularities
 
-#define ITERATION_COUNT 512//8640  //has to be >= PARTICLE_DMA_MAX
+#define ITERATION_COUNT 14000//8640  //has to be >= PARTICLE_DMA_MAX
 
 
 #define PARTICLE_DMA_MAX 512
@@ -79,11 +79,11 @@ __vector float hubbleVelocity = {0, 7500, 0,0};
  X = 1.142141171615604E+05 Y =-3.591656526588580E+05 Z = 2.279788111025651E+04
  VX= 1.002213369349858E+00 VY= 2.572033783875429E-01 VZ= 7.321967853480284E-02
  */
-
+/*
 __vector float moonPosition = {114214117, -359165652, 22797881, 0};
 __vector float moonVelocity = {1002, 257, 73};
 //float moonMass = 734900000000000000.0f; // original mass 7.349 * 10^22 
-
+*/
 
 
 
@@ -97,7 +97,7 @@ __vector float sat2Position = {-6930000,0, 0, 0}; //559000m high, need to add ea
 __vector float sat2Velocity = {0, -7500, 0,satMass};
 
 
-__vector float sat3Position = {0,6930000, 0, 0}; //559000m high, need to add earth radius
+__vector float sat3Position = {0,6930000, 6930000, 0}; //559000m high, need to add earth radius
 __vector float sat3Velocity = {-7500, 0, 0,satMass};
 
 
@@ -108,9 +108,14 @@ __vector float sat4Velocity = {7500, 0, 0,satMass};
 __vector float sat5Position = {0, 0, -6930000, 0}; //559000m high, need to add earth radius
 __vector float sat5Velocity = {7500, 0, 0,satMass};
 
-
+/*
 __vector float sat6Position = {0, 0, 6930000, 0}; //559000m high, need to add earth radius
 __vector float sat6Velocity = {0, 7500, 0,satMass};
+*/
+
+
+__vector float sat6Position = {114214117, -359165652, 22797881, 0};
+__vector float sat6Velocity = {1002, 257, 73, moonMass};
 
 
 __vector float immuneBodyPosition = {0,0,0,0};

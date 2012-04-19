@@ -34,7 +34,7 @@ Sagar Patel
 
 
 
-volatile particle_Data particle_Array_SPU[PARTICLES_MAXCOUNT] __attribute__((aligned(sizeof(particle_Data)*PARTICLES_MAXCOUNT)));
+volatile particle_Data particle_Array_SPU[PARTICLE_DMA_MAX] __attribute__((aligned(sizeof(particle_Data)*PARTICLE_DMA_MAX)));
 
 
 int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long envp)
@@ -110,6 +110,11 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	particle_Data satData;
 	particle_Data immuneData;
 
+	
+	immuneData.position = immuneBodyPosition;
+	immuneData.velocity = immuneBodyVelocity;	
+
+
 	int spuID = (int)envp;
 
 	switch(spuID)
@@ -152,7 +157,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 	}
     
 
-	tempMassSplat = spu_splats((float)satData.velocity[3]);
+	tempMassSplat = spu_splats((float)immuneData.velocity[3]);
 
 	int dmaCounter = 0;
 
@@ -182,7 +187,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 			//printf("Mass of particle: %d: %f\n",j, immuneData.velocity[3] );
 
-			tempMassSplat = spu_splats((float)immuneData.velocity[3]); //mass is stored in the last element (3) of velocity vector
+		//	tempMassSplat = spu_splats((float)immuneData.velocity[3]); //mass is stored in the last element (3) of velocity vector
 			tempNumerator = spu_madd(tempMassSplat, tempGConstant, zeroVector);
 			
 
@@ -267,11 +272,20 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			}
 			*/
 
+			/*
+			printf("Acceleration applied on particle: %d : x= %f, y=%f, z=%f", i, tempAcceleration[0], tempAcceleration[1], tempAcceleration[2]);
+			printf("\n");
+			*/
 			//increment velocity value of particle with a*dt
 			// need to explicitly call the array, since satData is only a temp pass by value, doesn't change the particle
-			particle_Array_SPU[i].velocity = spu_madd(tempAcceleration, tempDELATTIME, particle_Array_SPU[i].velocity);
+			//particle_Array_SPU[i].velocity = spu_madd(tempAcceleration, tempDELATTIME, particle_Array_SPU[i].velocity);
 			//restore mass in right position, in case
 			//particle_Array_SPU[i].velocity[3] = massSave;
+
+
+			satData.velocity = spu_madd(tempAcceleration, tempDELATTIME, satData.velocity);
+
+
 
 			/*
 			//Print velocity
@@ -290,13 +304,18 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
 			//incrementing position with v*dt
 			// spu_madd is awesome, it all gets done in one line! emulated the += operator, kinda, but more flexible
-			particle_Array_SPU[i].position = spu_madd(particle_Array_SPU[i].velocity, tempDELATTIME, particle_Array_SPU[i].position);
+			//particle_Array_SPU[i].position = spu_madd(particle_Array_SPU[i].velocity, tempDELATTIME, particle_Array_SPU[i].position);
+			satData.position = spu_madd(satData.velocity, tempDELATTIME, satData.position);
+
+			
+			particle_Array_SPU[i].position = satData.position;
 
 			/*
 			printf("Particle %d positions:   ", i );
 			printf("x= %f, y=%f, z=%f", particle_Array_SPU[i].position[0], particle_Array_SPU[i].position[1], particle_Array_SPU[i].position[2]);
 			printf("\n");
 			*/
+
 		}
 
 
@@ -329,7 +348,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 
   unsigned int killSig = spu_read_in_mbox();
   printf("killSig: %d\n", killSig );
-  
+
   return (0);
 }
 

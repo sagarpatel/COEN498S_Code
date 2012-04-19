@@ -406,7 +406,7 @@ int main(int argc, char **argv)
 	// wait for all SPEs to be started
 	while(contextReadySPE1 == 0 || contextReadySPE2 == 0 || contextReadySPE3 == 0 || contextReadySPE4 == 0 || contextReadySPE5 == 0 || contextReadySPE6 == 0 )
 	{
-		printf("Waiting for all start\n");
+		//printf("Waiting for all start\n");
 	}
 
 
@@ -417,7 +417,7 @@ int main(int argc, char **argv)
 	while( (speMsgArray[0] != KILLOPCODE) && (speMsgArray[1] != KILLOPCODE) && (speMsgArray[2] != KILLOPCODE) && (speMsgArray[3] != KILLOPCODE) && (speMsgArray[4] != KILLOPCODE) && (speMsgArray[5] != KILLOPCODE) )
 	{
 
-		printf("In main while\n");
+		//printf("In main while\n");
 		
 		// from http://www.ibm.com/developerworks/power/library/pa-tacklecell2/index.html
 		spe_out_mbox_read(contextPointerSPE1, &speMsgArray[0], 1);
@@ -427,34 +427,35 @@ int main(int argc, char **argv)
 		spe_out_mbox_read(contextPointerSPE5, &speMsgArray[4], 1);
 		spe_out_mbox_read(contextPointerSPE6, &speMsgArray[5], 1);
 
-		printf("After all reads\n");
+		//printf("After all reads\n");
 
 		for(speCounter = 0; speCounter < SPU_COUNT ; speCounter++ )
 		{
 			int opCode = (int)speMsgArray[speCounter];
 
-			printf("OPCODE %d\n", opCode );
+		//	printf("OPCODE %d\n", opCode );
 
-			if( (opCode != 0) && (opCode != KILLOPCODE) )
+			if( (opCode >= 0) && (opCode != KILLOPCODE) )
 			{
 
 				int arrayCounter = 0;
 				int startIndex = (int)opCode * PARTICLE_DMA_MAX;
 				int stopIndex = ((int)opCode * PARTICLE_DMA_MAX) + PARTICLE_DMA_MAX;
 
-				printf("opCode: %d\t startIndex: %d\n", opCode, startIndex);
+		//		printf("opCode: %d\t startIndex: %d\n", opCode, startIndex);
 
-				printf("Before entering transcription loop\n");
+		//		printf("Before entering transcription loop\n");
 				for(arrayCounter = startIndex; arrayCounter < stopIndex; arrayCounter ++)
 				{
 					// array counter should represent iteration index
 					// speCounter should be partcle id
-					printf("Inside transcription loop: %d\n", arrayCounter);
-					fullSimilationData[arrayCounter].particleArray[speCounter] = fullSPEData[speCounter].positionArray[arrayCounter]; // copy iterations of single body
-
+		//			printf("Inside transcription loop: %d\n", arrayCounter);
+					// +1 is to keep ifrs empty --> immune body
+					fullSimilationData[arrayCounter].particleArray[speCounter+1] = fullSPEData[speCounter].positionArray[arrayCounter]; // copy iterations of single body
+					//printf("From SPE:%d Body %d --> x:%f\ty:%f\tz:%f\n", speCounter, arrayCounter, fullSPEData[speCounter].positionArray[arrayCounter].position[0], fullSPEData[speCounter].positionArray[arrayCounter].position[1], fullSPEData[speCounter].positionArray[arrayCounter].position[2] );
 
 				}
-				printf("After transcription loop\n");
+		//		printf("After transcription loop\n");
 
 			}
 			
@@ -479,8 +480,6 @@ int main(int argc, char **argv)
 	int deltaTime = endTime - startTime;
 */
 
-	// need to look into http://www.xmlsoft.org/
-
 
 	struct timeval end;
 	gettimeofday(&end,NULL);
@@ -497,7 +496,7 @@ int main(int argc, char **argv)
 
 	iterCount = 0;
 	int pC = 0;
-	for (iterCount = 0; iterCount< ITERATION_COUNT; iterCount++)
+	for (iterCount = 0; iterCount< fullDataCount; iterCount++)
 	{
 		//printf("Iteration: %d\n", iterCount);
 		//fprintf(filePointer,"<Iter>\n");
@@ -510,10 +509,10 @@ int main(int argc, char **argv)
 			//printf("Particle %d positions:   ", pC );
 		//	fprintf(filePointer,"<Obj>\n");
 	    	
-
-			//printf("x= %f, y=%f, z=%f", fullSimilationData[iterCount].particleArray[pC].position[0], fullSimilationData[iterCount].particleArray[pC].position[1], fullSimilationData[iterCount].particleArray[pC].position[2]);
-			//printf("\n");
-			
+	    	/*
+			printf("x= %f, y=%f, z=%f", fullSimilationData[iterCount].particleArray[pC].position[0], fullSimilationData[iterCount].particleArray[pC].position[1], fullSimilationData[iterCount].particleArray[pC].position[2]);
+			printf("\n");
+			*/
 	    	/*
 			fprintf(filePointer,"<PX>%f</PX>\n",fullSimilationData[iterCount].particleArray[pC].position[0]);
 			fprintf(filePointer,"<PY>%f</PY>\n",fullSimilationData[iterCount].particleArray[pC].position[1]);
