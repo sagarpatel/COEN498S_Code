@@ -216,6 +216,7 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			//tempDistanceRL2 = spu_rlqw(tempDistance,2);
 			
 			///\\\\ doing it manually
+			/*
 			tempDistanceRL1[0] = tempDistance[1];
 			tempDistanceRL1[1] = tempDistance[2];
 			tempDistanceRL1[2] = tempDistance[0];
@@ -223,6 +224,10 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			tempDistanceRL2[0] = tempDistance[2];
 			tempDistanceRL2[1] = tempDistance[0];
 			tempDistanceRL2[2] = tempDistance[1];
+			*/
+
+			tempDistanceRL1 = spu_shuffle(tempDistance, zeroVector, yzxwMask); // imitates lxfloat left rotate
+			tempDistanceRL2 = spu_shuffle(tempDistance, zeroVector, zxywMask); // imitates 2xfloat left rotate
 
 			/*
 			printf("tempDistance: %f %f %f \n", tempDistance[0], tempDistance[1], tempDistance[2] );
@@ -255,13 +260,13 @@ int main(unsigned long long spe_id, unsigned long long pdata, unsigned long long
 			*/
 
 			//total acceleration applied to particle i, by particle j
-			tempAcceleration = spu_madd(tempDistance, tempNumerator, zeroVector);
+			tempAcceleration = spu_mul(tempDistance, tempNumerator);
 			
 			// create unit vector
-			tempUnitVector = spu_madd(distanceVector, tempUnitVector, zeroVector);
+			tempUnitVector = spu_mul(distanceVector, tempUnitVector);
 			
 			// apply unit vector to acceleration
-			tempAcceleration = spu_madd(tempUnitVector, tempAcceleration, zeroVector);
+			tempAcceleration = spu_mul(tempUnitVector, tempAcceleration);
 
 			//Print  accell
 			/*
