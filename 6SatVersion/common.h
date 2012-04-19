@@ -33,7 +33,7 @@ Sagar Patel
 #define DELTA_TIME 300
 #define GRID_SIZE 100 // grid is a +- GRID_SIZE/2 cube
 #define EPS 0.001 // EPS^2 constant to avoid singularities
-#define ITERATION_COUNT 10000//8640
+#define ITERATION_COUNT 74000//8640
 
 // 86400 seconds in 24 hours
 
